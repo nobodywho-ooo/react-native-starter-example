@@ -1,4 +1,5 @@
 {
+  "editor.snippetSuggestions": "top",
   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   "editor.formatOnType": false, // required
   "editor.formatOnPaste": true, // optional
