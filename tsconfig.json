@@ -2,7 +2,14 @@
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "types": ["jest"],
-    "customConditions": ["react-native", "react-native-strict-api"]
+    "customConditions": ["react-native", "react-native-strict-api"],
+    "paths": {
+      "components": ["./app/components"],
+      "interfaces": ["./app/interfaces"],
+      "navigation": ["./app/navigation"],
+      "style": ["./app/style"],
+      "utils": ["./app/utils"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["**/node_modules", "**/Pods"]
