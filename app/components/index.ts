@@ -1,3 +1,4 @@
+import { InputBar } from './InputBar';
 import { MessageListItem } from './MessageListItem';
 
-export { MessageListItem };
+export { InputBar, MessageListItem };

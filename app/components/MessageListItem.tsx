@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ViewStyle, StyleProp } from 'react-native';
 import { AiMessage, AiRole } from 'interfaces';
+import { useStyled } from 'hooks';
 
 interface MessageListItemProps {
   message: AiMessage;
@@ -8,17 +9,21 @@ interface MessageListItemProps {
 
 const MessageListItem: React.FC<MessageListItemProps> = ({ message }) => {
   const { content, role } = message;
-  let container = {};
+  const { colors } = useStyled();
+  let container: StyleProp<ViewStyle> = {};
 
   if (role == AiRole.user) {
-    container = styles.userContainer;
+    container = [
+      styles.userContainer,
+      { backgroundColor: colors.surfaceContainer },
+    ];
   } else if (role == AiRole.assistant) {
     container = styles.assistantContainer;
   }
 
   return (
     <View style={container}>
-      <Text>{content}</Text>
+      <Text style={[styles.text, { color: colors.onSurface }]}>{content}</Text>
     </View>
   );
 };
@@ -29,7 +34,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     marginVertical: 12,
     maxWidth: '85%',
-    backgroundColor: '#e0e0e0',
     alignSelf: 'flex-end',
     borderRadius: 16,
   },
@@ -37,6 +41,10 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     marginTop: 10,
     alignItems: 'flex-start',
+  },
+  text: {
+    fontSize: 15,
+    lineHeight: 22,
   },
 });
 

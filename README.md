@@ -18,8 +18,10 @@ Once that is done, run one of the following:
 npm run android
 
 # iOS
-npm run ios
+npm run iOS
 ```
+
+**Note:** For iOS, if you have issues with metro, run the project on Xcode and then run `npm start`.
 
 ---
 

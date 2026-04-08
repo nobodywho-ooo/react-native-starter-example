@@ -1,6 +1,19 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
+import { useStyled } from 'hooks';
 
 export const MoreScreen: React.FC = () => {
-  return <Text>More</Text>;
+  const { colors } = useStyled();
+
+  return (
+    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+      <Text style={{ color: colors.onSurface }}>More</Text>
+    </View>
+  );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

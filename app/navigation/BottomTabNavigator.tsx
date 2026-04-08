@@ -1,15 +1,21 @@
-import {
-  BottomTabNavigationOptions,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ChatScreen, MoreScreen } from '../screens';
 import { Platform } from 'react-native';
+import { useStyled } from 'hooks';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
+  const { colors } = useStyled();
+
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: colors.primary,
+        headerStyle: { backgroundColor: colors.surface },
+        headerTintColor: colors.onSurface,
+      }}
+    >
       <Tab.Screen
         options={{
           title: 'Chat',
@@ -48,20 +54,6 @@ const BottomTabNavigator = () => {
       />
     </Tab.Navigator>
   );
-};
-
-const moreOptionsIOS: BottomTabNavigationOptions = {
-  tabBarIcon: {
-    type: 'sfSymbol',
-    name: 'heart',
-  },
-};
-
-const moreOptionsAndroid: BottomTabNavigationOptions = {
-  tabBarIcon: {
-    type: 'materialSymbol',
-    name: 'more_horiz',
-  },
 };
 
 export default BottomTabNavigator;

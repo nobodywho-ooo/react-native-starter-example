@@ -8,7 +8,10 @@
       "interfaces": ["./app/interfaces"],
       "navigation": ["./app/navigation"],
       "style": ["./app/style"],
-      "utils": ["./app/utils"]
+      "utils": ["./app/utils"],
+      "types": ["./app/types"],
+      "hooks": ["./app/hooks"],
+      "context": ["./app/context"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
