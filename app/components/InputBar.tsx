@@ -29,7 +29,9 @@ interface InputBarProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export const InputBar: React.FC<InputBarProps> = ({
+const INPUT_BAR_HEIGHT = 48;
+
+export const InputBar: React.FC<InputBarProps> & { height: number } = ({
   value,
   onChangeText,
   onSend,
@@ -42,7 +44,6 @@ export const InputBar: React.FC<InputBarProps> = ({
     <View
       style={[
         styles.inputBarOuter,
-        !isLiquidGlassSupported && { backgroundColor: colors.surface },
         style,
       ]}
     >
@@ -50,6 +51,9 @@ export const InputBar: React.FC<InputBarProps> = ({
         style={[
           styles.inputBarInner,
           !isLiquidGlassSupported && styles.inputBarFallback,
+          !isLiquidGlassSupported && {
+            backgroundColor: colors.surfaceContainer,
+          },
         ]}
         {...getInputWrapperProps(isLiquidGlassSupported)}
       >
@@ -71,6 +75,8 @@ export const InputBar: React.FC<InputBarProps> = ({
   );
 };
 
+InputBar.height = INPUT_BAR_HEIGHT;
+
 const styles = StyleSheet.create({
   inputBarOuter: {
     position: 'absolute',
@@ -84,10 +90,9 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     paddingHorizontal: 16,
     paddingVertical: 8,
-    minHeight: 48,
+    minHeight: INPUT_BAR_HEIGHT,
   },
   inputBarFallback: {
-    backgroundColor: 'rgba(240, 240, 240, 0.95)',
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },

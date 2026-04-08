@@ -21,7 +21,7 @@ export const ChatScreen: React.FC = () => {
   const { colors } = useStyled();
   const insets = useSafeAreaInsets();
   // Use useBottomTabBarHeight when available, see https://github.com/react-navigation/react-navigation/discussions/12949?sort=new
-  const TAB_BAR_HEIGHT = Platform.OS === 'ios' ? 49 : 80;
+  const TAB_BAR_HEIGHT = Platform.OS === 'ios' ? 50 : 80;
   const isKeyboardVisible = keyboardHeight > 0;
 
   useEffect(() => {
