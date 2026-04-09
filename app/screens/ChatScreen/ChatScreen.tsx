@@ -12,6 +12,8 @@ import { AiMessage, AiRole } from 'interfaces';
 import { InputBar, MessageListItem } from 'components';
 import { useStyled } from 'hooks';
 
+import styles from './ChatScreen.styles';
+
 const _bottomPadding = 8;
 
 export const ChatScreen: React.FC = () => {
@@ -111,21 +113,3 @@ export const ChatScreen: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignSelf: 'center',
-  },
-  listContainer: {
-    flex: 1,
-    marginHorizontal: 16,
-  },
-  listContent: {
-    paddingVertical: 12,
-  },
-});

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  StyleSheet,
   Text,
   TextInput,
   Pressable,
@@ -13,6 +12,8 @@ import {
   isLiquidGlassSupported,
 } from '@callstack/liquid-glass';
 import { useStyled } from 'hooks';
+
+import { styles, INPUT_BAR_HEIGHT } from './InputBar.styles';
 
 const getInputWrapperProps = (isLiquidGlassSupported: Boolean) =>
   isLiquidGlassSupported
@@ -28,8 +29,6 @@ interface InputBarProps {
   onSend: () => void;
   style?: StyleProp<ViewStyle>;
 }
-
-const INPUT_BAR_HEIGHT = 48;
 
 export const InputBar: React.FC<InputBarProps> & { height: number } = ({
   value,
@@ -82,47 +81,3 @@ export const InputBar: React.FC<InputBarProps> & { height: number } = ({
 };
 
 InputBar.height = INPUT_BAR_HEIGHT;
-
-const styles = StyleSheet.create({
-  inputBarOuter: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    paddingHorizontal: 12,
-  },
-  inputBarInner: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    borderRadius: 24,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    minHeight: INPUT_BAR_HEIGHT,
-  },
-  inputBarFallback: {
-    boxShadow: [
-      {
-        offsetX: 0,
-        offsetY: 0,
-        blurRadius: '15px',
-        spreadDistance: '4px',
-        inset: false,
-      },
-    ],
-  },
-  textInput: {
-    flex: 1,
-    fontSize: 16,
-    maxHeight: 100,
-    paddingVertical: 4,
-  },
-  sendButton: {
-    marginLeft: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    justifyContent: 'center',
-  },
-  sendButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-});

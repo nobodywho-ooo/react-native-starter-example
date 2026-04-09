@@ -1,6 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { isLiquidGlassSupported } from '@callstack/liquid-glass';
-import { ChatScreen, MoreScreen } from '../screens';
+import { ChatScreen } from '../screens';
+import { MoreStackNavigator } from './MoreStackNavigator';
+import { VisionStackNavigator } from './VisionStackNavigator';
 import { Platform } from 'react-native';
 import { useStyled } from 'hooks';
 import { useTheme } from 'context';
@@ -11,7 +13,7 @@ const BottomTabNavigator = () => {
   const { colors } = useStyled();
   const theme = useTheme();
 
-  let tabBarInactiveTintColor = '#434343';
+  let tabBarInactiveTintColor = '#828282';
   let tabBarActiveTintColor = colors.primary;
 
   if (theme == 'dark') {
@@ -23,7 +25,7 @@ const BottomTabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         ...(!isLiquidGlassSupported && {
-          tabBarActiveTintColor,
+          tabBarActiveTintColor: tabBarActiveTintColor,
           tabBarInactiveTintColor,
         }),
         tabBarStyle: {
@@ -34,6 +36,7 @@ const BottomTabNavigator = () => {
       }}
     >
       <Tab.Screen
+        name="Chat"
         options={{
           title: 'Chat',
           headerShown: true,
@@ -48,13 +51,29 @@ const BottomTabNavigator = () => {
             },
           }),
         }}
-        name="Chat"
         component={ChatScreen}
       />
       <Tab.Screen
+        name="Vision"
         options={{
-          title: 'More',
-          headerShown: true,
+          headerShown: false,
+          tabBarIcon: Platform.select({
+            ios: {
+              type: 'sfSymbol',
+              name: 'camera.fill',
+            },
+            android: {
+              type: 'materialSymbol',
+              name: 'photo_camera',
+            },
+          }),
+        }}
+        component={VisionStackNavigator}
+      />
+      <Tab.Screen
+        name="More"
+        options={{
+          headerShown: false,
           tabBarIcon: Platform.select({
             ios: {
               type: 'sfSymbol',
@@ -66,8 +85,7 @@ const BottomTabNavigator = () => {
             },
           }),
         }}
-        name="More"
-        component={MoreScreen}
+        component={MoreStackNavigator}
       />
     </Tab.Navigator>
   );

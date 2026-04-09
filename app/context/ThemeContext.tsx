@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Appearance, ColorSchemeName } from 'react-native';
-import { Theme } from '../types/theme';
+import { Appearance } from 'react-native';
+import { Theme } from 'types';
 
 const defaultTheme: Theme = 'light';
 
