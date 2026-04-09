@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ViewStyle, StyleProp } from 'react-native';
 import { AiMessage, AiRole } from 'interfaces';
 import { useStyled } from 'hooks';
-import { Text } from 'components';
+import { Text } from '../Text/Text';
 
 import styles from './MessageListItem.styles';
 

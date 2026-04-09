@@ -4,6 +4,7 @@ export const lightColors = {
   surface: '#FFFFFF',
   surfaceSecondary: '#FFFFFF',
   onSurface: '#000000',
+  onSurfaceVariant: '#7c7c7c',
   surfaceContainer: '#ebebeb',
   primary: '#628395',
   border: '#9f9f9f',
@@ -17,6 +18,7 @@ export const darkColors = {
   surfaceContainer: '#3c3c3c',
   primary: '#628395',
   border: '#cacaca',
+  onSurfaceVariant: '#d8d8d8',
   shadow: 'rgba(244, 244, 244, 0.48)',
 };
 
