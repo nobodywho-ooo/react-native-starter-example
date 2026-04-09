@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MoreScreen } from '../screens';
+import { EmbeddingsScreen, MoreScreen, RagScreen } from '../screens';
 import { useStyled } from 'hooks';
 
 const Stack = createNativeStackNavigator();
@@ -9,6 +9,7 @@ export const MoreStackNavigator = () => {
 
   return (
     <Stack.Navigator
+      initialRouteName="MoreScreen"
       screenOptions={{
         headerStyle: { backgroundColor: colors.surface },
         headerTintColor: colors.onSurface,
@@ -21,6 +22,16 @@ export const MoreStackNavigator = () => {
           title: 'More',
           headerLargeTitleEnabled: true,
         }}
+      />
+      <Stack.Screen
+        name="EmbeddingsScreen"
+        component={EmbeddingsScreen}
+        options={{ title: 'Embeddings' }}
+      />
+      <Stack.Screen
+        name="RagScreen"
+        component={RagScreen}
+        options={{ title: 'RAG' }}
       />
     </Stack.Navigator>
   );

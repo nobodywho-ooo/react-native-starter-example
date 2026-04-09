@@ -13,7 +13,12 @@ export const RagScreen: React.FC = () => {
       contentInsetAdjustmentBehavior="automatic"
       style={[styles.container, { backgroundColor: colors.surface }]}
     >
-      <Text>EmbeddingsScreen</Text>
+      <Button
+        style={styles.button}
+        title="Run RAG"
+        variant="primary"
+        onPress={() => {}}
+      />
     </ScrollView>
   );
 };

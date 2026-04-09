@@ -13,7 +13,12 @@ export const EmbeddingsScreen: React.FC = () => {
       contentInsetAdjustmentBehavior="automatic"
       style={[styles.container, { backgroundColor: colors.surface }]}
     >
-      <Text>EmbeddingsScreen</Text>
+      <Button
+        style={styles.button}
+        title="Run Embeddings"
+        variant="primary"
+        onPress={() => {}}
+      />
     </ScrollView>
   );
 };

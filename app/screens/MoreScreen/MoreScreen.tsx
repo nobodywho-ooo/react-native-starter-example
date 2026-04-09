@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useStyled } from 'hooks';
 import { ListItem } from 'components';
 
@@ -7,6 +8,7 @@ import styles from './MoreScreen.styles';
 
 export const MoreScreen: React.FC = () => {
   const { colors } = useStyled();
+  const navigation = useNavigation();
 
   return (
     <ScrollView
@@ -19,7 +21,8 @@ export const MoreScreen: React.FC = () => {
         iosIconName="document.fill"
         androidIconName="article"
         iconBackgroundColor="#5856D6"
-        onPress={() => {}}
+        // @ts-ignore
+        onPress={() => navigation.navigate('EmbeddingsScreen')}
       />
       <ListItem
         title="RAG"
@@ -27,7 +30,8 @@ export const MoreScreen: React.FC = () => {
         iosIconName="magnifyingglass"
         androidIconName="search"
         iconBackgroundColor="#FF9500"
-        onPress={() => {}}
+        // @ts-ignore
+        onPress={() => navigation.navigate('RagScreen')}
       />
     </ScrollView>
   );

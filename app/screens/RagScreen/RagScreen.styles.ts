@@ -7,4 +7,5 @@ export default StyleSheet.create({
     ...Layout.container,
     paddingTop: 24,
   },
+  button: { marginBottom: 16 },
 });
