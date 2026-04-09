@@ -26,7 +26,9 @@ const BottomTabNavigator = () => {
           tabBarActiveTintColor,
           tabBarInactiveTintColor,
         }),
-        tabBarStyle: { backgroundColor: colors.surfaceContainer },
+        tabBarStyle: {
+          backgroundColor: colors.surfaceSecondary,
+        },
         headerStyle: { backgroundColor: colors.surface },
         headerTintColor: colors.onSurface,
       }}

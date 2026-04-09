@@ -92,7 +92,10 @@ export const ChatScreen: React.FC = () => {
         <FlatList
           data={messages}
           style={styles.listContainer}
-          contentContainerStyle={[styles.listContent, { paddingBottom: 70 }]}
+          contentContainerStyle={[
+            styles.listContent,
+            { paddingBottom: bottomOffset + InputBar.height },
+          ]}
           keyExtractor={(_, index) => index.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <MessageListItem message={item} />}

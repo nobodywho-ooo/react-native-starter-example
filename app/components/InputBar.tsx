@@ -41,24 +41,30 @@ export const InputBar: React.FC<InputBarProps> & { height: number } = ({
   const InputWrapper = isLiquidGlassSupported ? LiquidGlassView : View;
 
   return (
-    <View
-      style={[
-        styles.inputBarOuter,
-        style,
-      ]}
-    >
+    <View style={[styles.inputBarOuter, style]}>
       <InputWrapper
         style={[
           styles.inputBarInner,
-          !isLiquidGlassSupported && styles.inputBarFallback,
           !isLiquidGlassSupported && {
-            backgroundColor: colors.surfaceContainer,
+            boxShadow: [
+              {
+                offsetX: 0,
+                offsetY: 0,
+                blurRadius: '15px',
+                spreadDistance: '4px',
+                color: colors.shadow,
+                inset: false,
+              },
+            ],
+          },
+          !isLiquidGlassSupported && {
+            backgroundColor: colors.surfaceSecondary,
           },
         ]}
         {...getInputWrapperProps(isLiquidGlassSupported)}
       >
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, { color: colors.onSurface }]}
           placeholder="Type a message..."
           placeholderTextColor="#999"
           value={value}
@@ -93,15 +99,21 @@ const styles = StyleSheet.create({
     minHeight: INPUT_BAR_HEIGHT,
   },
   inputBarFallback: {
-    borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
+    boxShadow: [
+      {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: '15px',
+        spreadDistance: '4px',
+        inset: false,
+      },
+    ],
   },
   textInput: {
     flex: 1,
     fontSize: 16,
     maxHeight: 100,
     paddingVertical: 4,
-    color: '#000',
   },
   sendButton: {
     marginLeft: 8,
