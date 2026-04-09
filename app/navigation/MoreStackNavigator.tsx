@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { isLiquidGlassSupported } from '@callstack/liquid-glass';
 import { EmbeddingsScreen, MoreScreen, RagScreen } from '../screens';
 import { useStyled } from 'hooks';
 
@@ -11,8 +12,12 @@ export const MoreStackNavigator = () => {
     <Stack.Navigator
       initialRouteName="MoreScreen"
       screenOptions={{
-        headerStyle: { backgroundColor: colors.surface },
+        ...(!isLiquidGlassSupported && {
+          headerStyle: { backgroundColor: colors.surface },
+        }),
         headerTintColor: colors.onSurface,
+        headerTitleStyle: { color: colors.onSurface },
+        headerLargeTitleStyle: { color: colors.onSurface },
       }}
     >
       <Stack.Screen

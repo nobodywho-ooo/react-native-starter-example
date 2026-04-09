@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { isLiquidGlassSupported } from '@callstack/liquid-glass';
 import { VisionScreen } from '../screens';
 import { useStyled } from 'hooks';
 
@@ -10,8 +11,12 @@ export const VisionStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: colors.surface },
+        ...(!isLiquidGlassSupported && {
+          headerStyle: { backgroundColor: colors.surface },
+        }),
         headerTintColor: colors.onSurface,
+        headerTitleStyle: { color: colors.onSurface },
+        headerLargeTitleStyle: { color: colors.onSurface },
       }}
     >
       <Stack.Screen
