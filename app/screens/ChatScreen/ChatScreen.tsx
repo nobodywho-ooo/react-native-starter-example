@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, Text, Platform, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AiMessage, AiRole } from 'interfaces';
+import { Message, Role } from 'react-native-nobodywho';
 import { InputBar, MessageListItem } from 'components';
 import { useStyled } from 'hooks';
+import { useAiService } from 'services';
 
 import styles from './ChatScreen.styles';
 
-const _bottomPadding = 8;
+const INPUT_BAR_BOTTOM_GAP = 14;
 
 export const ChatScreen: React.FC = () => {
-  const [messages, setMessages] = useState<AiMessage[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [isGenerating, setIsGenerating] = useState(false);
   const { colors } = useStyled();
+  const { chat } = useAiService();
   const insets = useSafeAreaInsets();
   // Use useBottomTabBarHeight when available, see https://github.com/react-navigation/react-navigation/discussions/12949?sort=new
   const TAB_BAR_HEIGHT = Platform.OS === 'ios' ? 50 : 80;
@@ -38,43 +41,67 @@ export const ChatScreen: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    setMessages([
-      AiMessage.message({
-        role: AiRole.user,
-        content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec commodo leo malesuada mollis egestas. Phasellus viverra sodales felis, ac posuere sapien iaculis in. Suspendisse tempor quis felis vitae malesuada. Sed mi urna, finibus non cursus vel, lacinia nec lectus. Donec sed lorem at magna tempus faucibus vulputate eu est. Nunc vel consectetur enim, vitae consectetur tellus. Aliquam porttitor arcu a egestas lacinia.',
-      }),
-      AiMessage.message({
-        role: AiRole.assistant,
-        content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec commodo leo malesuada mollis egestas. Phasellus viverra sodales felis, ac posuere sapien iaculis in. Suspendisse tempor quis felis vitae malesuada. Sed mi urna, finibus non cursus vel, lacinia nec lectus. Donec sed lorem at magna tempus faucibus vulputate eu est. Nunc vel consectetur enim, vitae consectetur tellus. Aliquam porttitor arcu a egestas lacinia. In commodo vehicula diam vel volutpat. Vestibulum et porta metus. Sed non consectetur nisi. Phasellus pellentesque nisi vitae neque interdum blandit. Vestibulum sodales mi in sem ultrices aliquam. Pellentesque ultricies nisi vel sagittis sollicitudin. Fusce magna augue, malesuada id maximus in, euismod id elit. Nulla ac aliquam lectus. Duis tincidunt nisl nulla, quis feugiat dui euismod eu. ',
-      }),
-    ]);
-  }, []);
-
-  const handleSend = () => {
+  const handleSend = async () => {
     const trimmed = inputText.trim();
-    if (!trimmed) return;
-    setMessages(prev => [
-      ...prev,
-      AiMessage.message({ role: AiRole.user, content: trimmed }),
-    ]);
+    if (!trimmed || isGenerating) return;
+
+    if (!chat) {
+      console.warn('Chat is not initialized yet.');
+      return;
+    }
+
+    const userMessage = new Message.Message({
+      role: Role.User,
+      content: trimmed,
+      assets: [],
+    });
+    const initialAssistantMessage = new Message.Message({
+      role: Role.Assistant,
+      content: '',
+      assets: [],
+    });
+
+    setMessages(prev => [...prev, userMessage, initialAssistantMessage]);
     setInputText('');
     Keyboard.dismiss();
+    setIsGenerating(true);
+
+    try {
+      // Accumulate tokens and replace the last (assistant) message on each
+      // one — messages are immutable (Message.inner is frozen), so we rebuild.
+      let accumulated = '';
+      for await (const token of chat.current!.ask(trimmed)) {
+        accumulated += token;
+        setMessages(prev => {
+          const next = [...prev];
+          next[next.length - 1] = new Message.Message({
+            role: Role.Assistant,
+            content: accumulated,
+            assets: [],
+          });
+          return next;
+        });
+      }
+    } catch (error) {
+      console.error('Chat generation failed:', error);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const bottomOffset = isKeyboardVisible
     ? keyboardHeight +
       (Platform.OS === 'android' ? insets.bottom : 0) +
-      _bottomPadding
-    : TAB_BAR_HEIGHT + insets.bottom + _bottomPadding;
+      INPUT_BAR_BOTTOM_GAP
+    : TAB_BAR_HEIGHT + insets.bottom + INPUT_BAR_BOTTOM_GAP;
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
-      {messages.length === 0 ? (
+      {messages.length === 0 && !isKeyboardVisible ? (
         <View style={styles.emptyContainer}>
-          <Text style={{ color: colors.onSurface }}>Start a chat</Text>
+          {!isKeyboardVisible && (
+            <Text style={{ color: colors.onSurface }}>Start a chat</Text>
+          )}
         </View>
       ) : (
         <FlatList

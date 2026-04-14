@@ -8,7 +8,7 @@ export const lightColors = {
   surfaceContainer: '#ebebeb',
   primary: '#628395',
   border: '#9f9f9f',
-  shadow: 'rgba(44, 44, 44, 0.33)',
+  shadow: 'rgba(44, 44, 44, 0.24)',
 };
 
 export const darkColors = {

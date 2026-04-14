@@ -14,4 +14,4 @@ function isIOS26OrLater(): boolean {
   return getIOSVersion() >= 26;
 }
 
-export default { isIOS, isAndroid, getIOSVersion, isIOS26OrLater };
+export { isIOS, isAndroid, getIOSVersion, isIOS26OrLater };

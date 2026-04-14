@@ -4,30 +4,30 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { isLiquidGlassSupported } from '@callstack/liquid-glass';
 import { useStyled } from 'hooks';
 import { AiModelState, useAiService } from 'services';
-import { VisionScreen, ErrorScreen, LoadingScreen } from '../screens';
+import { ChatScreen, ErrorScreen, LoadingScreen } from '../screens';
 
 const Stack = createNativeStackNavigator();
 
-export const VisionStackNavigator = () => {
+export const ChatStackNavigator = () => {
   const { colors } = useStyled();
-  const { visionChatState, createVisionChat } = useAiService();
+  const { chatState, createChat } = useAiService();
 
-  const initVisionChat = useCallback(async () => {
-    await createVisionChat();
-  }, [createVisionChat]);
+  const initChat = useCallback(async () => {
+    await createChat();
+  }, [createChat]);
 
   useEffect(() => {
-    initVisionChat();
-  }, [initVisionChat]);
+    initChat();
+  }, [initChat]);
 
   let Screen = LoadingScreen;
 
-  switch (visionChatState) {
+  switch (chatState) {
     case AiModelState.Ready:
-      Screen = VisionScreen;
+      Screen = ChatScreen;
       break;
     case AiModelState.Error:
-      Screen = () => <ErrorScreen onRetry={initVisionChat} />;
+      Screen = () => <ErrorScreen onRetry={initChat} />;
       break;
     default:
       Screen = LoadingScreen;
@@ -45,12 +45,9 @@ export const VisionStackNavigator = () => {
       }}
     >
       <Stack.Screen
-        name="VisionScreen"
+        name="ChatScreen"
         component={Screen}
-        options={{
-          title: 'Vision',
-          headerLargeTitleEnabled: true,
-        }}
+        options={{ title: 'Chat', headerLargeTitleEnabled: true }}
       />
     </Stack.Navigator>
   );

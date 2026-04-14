@@ -5,13 +5,14 @@
     "customConditions": ["react-native", "react-native-strict-api"],
     "paths": {
       "components": ["./app/components"],
-      "interfaces": ["./app/interfaces"],
       "navigation": ["./app/navigation"],
       "style": ["./app/style"],
       "utils": ["./app/utils"],
       "types": ["./app/types"],
       "hooks": ["./app/hooks"],
-      "context": ["./app/context"]
+      "context": ["./app/context"],
+      "services": ["./app/services"],
+      "helpers": ["./app/helpers"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

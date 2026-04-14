@@ -1,5 +1,5 @@
 {
-  "name": "react-native-nobodywho",
+  "name": "react-native-starter-example",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -11,12 +11,13 @@
   },
   "dependencies": {
     "@callstack/liquid-glass": "^0.7.1",
+    "@dr.pogodin/react-native-fs": "^2.38.2",
     "@react-navigation/bottom-tabs": "^8.0.0-alpha.22",
     "@react-navigation/native": "^8.0.0-alpha.17",
     "@react-navigation/native-stack": "^8.0.0-alpha.22",
     "react": "19.2.3",
     "react-native": "0.84.1",
-    "react-native-nobodywho": "^0.1.0",
+    "react-native-nobodywho": "^0.1.1",
     "react-native-safe-area-context": "^5.7.0",
     "react-native-screens": "^4.24.0"
   },

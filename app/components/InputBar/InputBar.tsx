@@ -71,7 +71,14 @@ export const InputBar: React.FC<InputBarProps> & { height: number } = ({
           multiline
         />
         <Pressable onPress={onSend} style={styles.sendButton}>
-          <Text style={[styles.sendButtonText, { color: colors.primary }]}>
+          <Text
+            style={[
+              styles.sendButtonText,
+              {
+                color: value === '' ? colors.onSurfaceVariant : colors.primary,
+              },
+            ]}
+          >
             Send
           </Text>
         </Pressable>

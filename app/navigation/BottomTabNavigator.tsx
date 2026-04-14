@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { isLiquidGlassSupported } from '@callstack/liquid-glass';
-import { ChatScreen } from '../screens';
 import { MoreStackNavigator } from './MoreStackNavigator';
 import { VisionStackNavigator } from './VisionStackNavigator';
+import { ChatStackNavigator } from './ChatStackNavigator';
 import { Platform } from 'react-native';
 import { useStyled } from 'hooks';
 import { useTheme } from 'context';
@@ -39,7 +39,7 @@ const BottomTabNavigator = () => {
         name="Chat"
         options={{
           title: 'Chat',
-          headerShown: true,
+          headerShown: false,
           tabBarIcon: Platform.select({
             ios: {
               type: 'sfSymbol',
@@ -51,7 +51,7 @@ const BottomTabNavigator = () => {
             },
           }),
         }}
-        component={ChatScreen}
+        component={ChatStackNavigator}
       />
       <Tab.Screen
         name="Vision"
