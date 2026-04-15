@@ -7,10 +7,14 @@ import { variantStyles } from './Text.styles';
 
 interface TextProps extends RNTextProps {
   variant?: TextVariant;
+  bold?: boolean;
+  italic?: boolean;
 }
 
 export const Text: React.FC<TextProps> = ({
   variant = 'body1',
+  bold,
+  italic,
   style,
   ...props
 }) => {
@@ -18,7 +22,13 @@ export const Text: React.FC<TextProps> = ({
 
   return (
     <RNText
-      style={[{ color: colors.onSurface }, variantStyles[variant], style]}
+      style={[
+        { color: colors.onSurface },
+        variantStyles[variant],
+        bold && { fontWeight: '600' },
+        italic && { fontStyle: 'italic' },
+        style,
+      ]}
       {...props}
     />
   );

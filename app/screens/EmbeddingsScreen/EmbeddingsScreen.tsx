@@ -83,8 +83,10 @@ export const EmbeddingsScreen: React.FC = () => {
         <ActivityIndicator size="large" style={styles.spinner} />
       ) : bestMatch !== '' ? (
         <>
-          <Text style={styles.queryLabel}>Query: {query}</Text>
-          <Text style={styles.bestMatch}>Best match: {bestMatch}</Text>
+          <Text style={styles.paragraph} italic>
+            Query: {query}
+          </Text>
+          <Text style={styles.paragraph}>Best match: {bestMatch}</Text>
         </>
       ) : null}
     </ScrollView>

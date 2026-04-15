@@ -7,5 +7,10 @@ export default StyleSheet.create({
     ...Layout.container,
     paddingTop: 24,
   },
-  button: { marginBottom: 16 },
+  button: { marginTop: 16, marginBottom: 16 },
+  spinner: {
+    alignSelf: 'center',
+    paddingVertical: 24,
+  },
+  paragraph: { paddingTop: 8 },
 });

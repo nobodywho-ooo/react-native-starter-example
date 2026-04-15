@@ -13,6 +13,5 @@ export default StyleSheet.create({
     alignSelf: 'center',
     paddingVertical: 24,
   },
-  queryLabel: { paddingTop: 8, fontStyle: 'italic' },
-  bestMatch: { paddingTop: 8, fontWeight: '600' },
+  paragraph: { paddingTop: 8 },
 });
