@@ -52,7 +52,7 @@ interface AiServiceContextValue extends AiServiceState {
     sampler?: SamplerConfigInterface;
     contextSize?: number;
   }) => Promise<void>;
-  createToolCallingChat: (opts: {
+  createToolCallingChat: (opts?: {
     useGpu?: boolean;
     tools?: Tool[];
     systemPrompt?: string;
@@ -64,13 +64,11 @@ interface AiServiceContextValue extends AiServiceState {
     systemPrompt?: string;
     contextSize?: number;
   }) => Promise<void>;
-  createEncoder: (opts: {
-    modelPath: string;
+  createEncoder: (opts?: {
     useGpu?: boolean;
     contextSize?: number;
   }) => Promise<void>;
-  createCrossEncoder: (opts: {
-    modelPath: string;
+  createCrossEncoder: (opts?: {
     useGpu?: boolean;
     contextSize?: number;
   }) => Promise<void>;
@@ -140,7 +138,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const createToolCallingChat = useCallback(
-    async (opts: {
+    async (opts?: {
       useGpu?: boolean;
       tools?: Tool[];
       systemPrompt?: string;
@@ -157,11 +155,11 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         const modelPath = await getAssetPath(ModelName.Chat);
         const chat = await Chat.fromPath({
           modelPath: modelPath,
-          useGpu: opts.useGpu ?? true,
-          tools: opts.tools ?? [],
-          systemPrompt: opts.systemPrompt,
-          sampler: opts.sampler,
-          contextSize: opts.contextSize,
+          useGpu: opts?.useGpu ?? true,
+          tools: opts?.tools ?? [],
+          systemPrompt: opts?.systemPrompt,
+          sampler: opts?.sampler,
+          contextSize: opts?.contextSize,
         });
         chatWithToolCallingRef.current = chat;
         setState(s => ({
@@ -212,7 +210,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Embeddings
   const createEncoder = useCallback(
-    async (opts: { useGpu?: boolean; contextSize?: number }) => {
+    async (opts?: { useGpu?: boolean; contextSize?: number }) => {
       if (inFlight.current.encoder) return;
       inFlight.current.encoder = true;
       setState(s => ({ ...s, encoderState: AiModelState.Loading }));
@@ -220,10 +218,10 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         const modelPath = await getAssetPath(ModelName.Embedding);
         const model = await loadModel(
           modelPath,
-          opts.useGpu ?? true,
+          opts?.useGpu ?? true,
           undefined,
         );
-        const encoder = new Encoder(model, opts.contextSize);
+        const encoder = new Encoder(model, opts?.contextSize);
         encoderRef.current = encoder;
         setState(s => ({ ...s, encoderState: AiModelState.Ready }));
       } catch {
@@ -237,7 +235,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // ReRanker
   const createCrossEncoder = useCallback(
-    async (opts: { useGpu?: boolean; contextSize?: number }) => {
+    async (opts?: { useGpu?: boolean; contextSize?: number }) => {
       if (inFlight.current.crossEncoder) return;
       inFlight.current.crossEncoder = true;
       setState(s => ({ ...s, crossEncoderState: AiModelState.Loading }));
@@ -245,10 +243,10 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         const modelPath = await getAssetPath(ModelName.Reranker);
         const model = await loadModel(
           modelPath,
-          opts.useGpu ?? true,
+          opts?.useGpu ?? true,
           undefined,
         );
-        const crossEncoder = new CrossEncoder(model, opts.contextSize);
+        const crossEncoder = new CrossEncoder(model, opts?.contextSize);
         crossEncoderRef.current = crossEncoder;
         setState(s => ({ ...s, crossEncoderState: AiModelState.Ready }));
       } catch {
@@ -270,6 +268,14 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
     encoderRef.current = undefined;
     crossEncoderRef.current?.uniffiDestroy();
     crossEncoderRef.current = undefined;
+
+    // Reset in-flight flags so a subsequent createX() isn't silently skipped
+    // if dispose ran while a load was pending.
+    inFlight.current.chat = false;
+    inFlight.current.chatWithToolCalling = false;
+    inFlight.current.visionChat = false;
+    inFlight.current.encoder = false;
+    inFlight.current.crossEncoder = false;
 
     setState(_initialState);
   }, []);

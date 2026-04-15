@@ -13,6 +13,7 @@ export default StyleSheet.create({
     borderRadius: 12,
     marginBottom: 16,
   },
-  info: { paddingTop: 16 },
+  subHeader: { paddingTop: 8, paddingBottom: 4 },
+  imageDescriptionText: { paddingTop: 16 },
   button: { marginTop: 16 },
 });

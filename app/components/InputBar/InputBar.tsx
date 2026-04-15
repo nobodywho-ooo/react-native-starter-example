@@ -15,7 +15,7 @@ import { useStyled } from 'hooks';
 
 import { styles, INPUT_BAR_HEIGHT } from './InputBar.styles';
 
-const getInputWrapperProps = (isLiquidGlassSupported: Boolean) =>
+const getInputWrapperProps = (isLiquidGlassSupported: boolean) =>
   isLiquidGlassSupported
     ? {
         effect: 'regular' as const,

@@ -9,6 +9,8 @@ export const lightColors = {
   primary: '#628395',
   border: '#9f9f9f',
   shadow: 'rgba(44, 44, 44, 0.24)',
+  tabBarActive: '#628395',
+  tabBarInactive: '#828282',
 };
 
 export const darkColors = {
@@ -20,6 +22,8 @@ export const darkColors = {
   border: '#cacaca',
   onSurfaceVariant: '#d8d8d8',
   shadow: 'rgba(244, 244, 244, 0.48)',
+  tabBarActive: '#e8e8e8',
+  tabBarInactive: '#9e9e9e',
 };
 
 export const getColors = (theme: Theme) => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { isLiquidGlassSupported } from '@callstack/liquid-glass';
 import { useStyled } from 'hooks';
@@ -20,6 +20,11 @@ export const ChatStackNavigator = () => {
     initChat();
   }, [initChat]);
 
+  const ErrorScreenWithRetry = useMemo(
+    () => () => <ErrorScreen onRetry={initChat} />,
+    [initChat],
+  );
+
   let Screen = LoadingScreen;
 
   switch (chatState) {
@@ -27,7 +32,7 @@ export const ChatStackNavigator = () => {
       Screen = ChatScreen;
       break;
     case AiModelState.Error:
-      Screen = () => <ErrorScreen onRetry={initChat} />;
+      Screen = ErrorScreenWithRetry;
       break;
     default:
       Screen = LoadingScreen;

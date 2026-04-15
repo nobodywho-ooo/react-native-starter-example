@@ -5,28 +5,18 @@ import { VisionStackNavigator } from './VisionStackNavigator';
 import { ChatStackNavigator } from './ChatStackNavigator';
 import { Platform } from 'react-native';
 import { useStyled } from 'hooks';
-import { useTheme } from 'context';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   const { colors } = useStyled();
-  const theme = useTheme();
-
-  let tabBarInactiveTintColor = '#828282';
-  let tabBarActiveTintColor = colors.primary;
-
-  if (theme == 'dark') {
-    tabBarInactiveTintColor = '#9e9e9e';
-    tabBarActiveTintColor = '#e8e8e8';
-  }
 
   return (
     <Tab.Navigator
       screenOptions={{
         ...(!isLiquidGlassSupported && {
-          tabBarActiveTintColor: tabBarActiveTintColor,
-          tabBarInactiveTintColor,
+          tabBarActiveTintColor: colors.tabBarActive,
+          tabBarInactiveTintColor: colors.tabBarInactive,
         }),
         tabBarStyle: {
           backgroundColor: colors.surfaceSecondary,

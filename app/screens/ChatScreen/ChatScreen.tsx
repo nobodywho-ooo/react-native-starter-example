@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, View, Text, Platform, Keyboard } from 'react-native';
+import { FlatList, View, Platform, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Message, Role } from 'react-native-nobodywho';
-import { InputBar, MessageListItem } from 'components';
+import { InputBar, MessageListItem, Text } from 'components';
 import { useStyled } from 'hooks';
 import { useAiService } from 'services';
 
@@ -16,7 +16,7 @@ export const ChatScreen: React.FC = () => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
   const { colors } = useStyled();
-  const { chat } = useAiService();
+  const { chat: currentChat } = useAiService();
   const insets = useSafeAreaInsets();
   // Use useBottomTabBarHeight when available, see https://github.com/react-navigation/react-navigation/discussions/12949?sort=new
   const TAB_BAR_HEIGHT = Platform.OS === 'ios' ? 50 : 80;
@@ -45,8 +45,9 @@ export const ChatScreen: React.FC = () => {
     const trimmed = inputText.trim();
     if (!trimmed || isGenerating) return;
 
+    const chat = currentChat.current;
+
     if (!chat) {
-      console.warn('Chat is not initialized yet.');
       return;
     }
 
@@ -70,7 +71,7 @@ export const ChatScreen: React.FC = () => {
       // Accumulate tokens and replace the last (assistant) message on each
       // one — messages are immutable (Message.inner is frozen), so we rebuild.
       let accumulated = '';
-      for await (const token of chat.current!.ask(trimmed)) {
+      for await (const token of chat.ask(trimmed)) {
         accumulated += token;
         setMessages(prev => {
           const next = [...prev];
@@ -97,7 +98,7 @@ export const ChatScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
-      {messages.length === 0 && !isKeyboardVisible ? (
+      {messages.length === 0 ? (
         <View style={styles.emptyContainer}>
           {!isKeyboardVisible && (
             <Text style={{ color: colors.onSurface }}>Start a chat</Text>

@@ -46,6 +46,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   text: {
     fontSize: 16,

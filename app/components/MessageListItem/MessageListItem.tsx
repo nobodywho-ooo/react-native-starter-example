@@ -13,15 +13,19 @@ interface MessageListItemProps {
 const MessageListItem: React.FC<MessageListItemProps> = ({ message }) => {
   const { content, role } = message.inner;
   const { colors } = useStyled();
-  let container: StyleProp<ViewStyle> = {};
 
-  if (role === Role.User) {
-    container = [
-      styles.userContainer,
-      { backgroundColor: colors.surfaceContainer },
-    ];
-  } else if (role === Role.Assistant) {
-    container = styles.assistantContainer;
+  let container: StyleProp<ViewStyle>;
+  switch (role) {
+    case Role.User:
+      container = [
+        styles.userContainer,
+        { backgroundColor: colors.surfaceContainer },
+      ];
+      break;
+    case Role.Assistant:
+    default:
+      container = styles.assistantContainer;
+      break;
   }
 
   return (

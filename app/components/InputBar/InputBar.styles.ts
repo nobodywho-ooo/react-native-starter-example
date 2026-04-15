@@ -17,17 +17,6 @@ export const styles = StyleSheet.create({
     paddingVertical: 8,
     minHeight: INPUT_BAR_HEIGHT,
   },
-  inputBarFallback: {
-    boxShadow: [
-      {
-        offsetX: 0,
-        offsetY: 0,
-        blurRadius: '15px',
-        spreadDistance: '4px',
-        inset: false,
-      },
-    ],
-  },
   textInput: {
     flex: 1,
     fontSize: 16,
