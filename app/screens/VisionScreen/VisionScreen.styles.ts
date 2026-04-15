@@ -15,5 +15,9 @@ export default StyleSheet.create({
   },
   subHeader: { paddingTop: 8, paddingBottom: 4 },
   imageDescriptionText: { paddingTop: 16 },
+  spinner: {
+    alignSelf: 'center',
+    paddingVertical: 24,
+  },
   button: { marginTop: 16 },
 });

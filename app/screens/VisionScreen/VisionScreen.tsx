@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Image, ScrollView } from 'react-native';
+import { ActivityIndicator, Image, ScrollView } from 'react-native';
 import { useStyled } from 'hooks';
 import { Text, Button } from 'components';
 import { useAiService } from 'services';
@@ -12,21 +12,29 @@ export const VisionScreen: React.FC = () => {
   const { colors } = useStyled();
   const { visionChat } = useAiService();
   const [result, setResult] = useState('');
+  const [isStreaming, setIsStreaming] = useState(false);
 
   const analyse = useCallback(async () => {
+    const activeChat = visionChat.current;
+    if (!activeChat) return;
+
+    setResult('');
+    setIsStreaming(true);
     try {
       const imagePath = await getAssetPath('image-1.png');
       const prompt = new Prompt([
         Prompt.Text('What do you see in this image?'),
         Prompt.Image(imagePath),
       ]);
-      console.log('analyse...');
-      const response = await visionChat.current?.ask(prompt).completed();
-      if (response) {
-        setResult(response);
+      let accumulated = '';
+      for await (const token of activeChat.ask(prompt)) {
+        accumulated += token;
+        setResult(accumulated);
       }
     } catch (error) {
       console.log('error', error);
+    } finally {
+      setIsStreaming(false);
     }
   }, [visionChat]);
 
@@ -40,17 +48,22 @@ export const VisionScreen: React.FC = () => {
         style={styles.image}
         resizeMode="cover"
       />
-      <Text variant="h3">Analyze & describe pictures.</Text>
+      <Text variant="h3">Analyze & Describe</Text>
       <Text style={styles.subHeader}>
         Find out what the model can see in the image.
       </Text>
       <Button
         style={styles.button}
-        title="Analyze"
+        title={isStreaming ? 'Analyzing...' : 'Analyze'}
         variant="primary"
         onPress={analyse}
+        disabled={isStreaming}
       />
-      <Text style={styles.imageDescriptionText}>{result}</Text>
+      {isStreaming && result === '' ? (
+        <ActivityIndicator size="large" style={styles.spinner} />
+      ) : (
+        <Text style={styles.imageDescriptionText}>{result}</Text>
+      )}
     </ScrollView>
   );
 };
