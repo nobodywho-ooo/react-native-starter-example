@@ -7,4 +7,8 @@ export default StyleSheet.create({
     ...Layout.container,
     paddingTop: 16,
   },
+  spinner: {
+    alignSelf: 'center',
+    paddingVertical: 24,
+  },
 });

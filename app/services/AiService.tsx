@@ -1,4 +1,3 @@
-import { getAssetPath } from 'helpers';
 import React, {
   createContext,
   useCallback,
@@ -7,7 +6,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Platform } from 'react-native';
 import {
   Chat,
   Encoder,
@@ -16,6 +14,7 @@ import {
   SamplerConfigInterface,
   Tool,
 } from 'react-native-nobodywho';
+import { devLog, getAssetPath } from 'helpers';
 
 export enum AiModelState {
   NotLoaded = 'notLoaded',
@@ -114,7 +113,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       sampler?: SamplerConfigInterface;
       contextSize?: number;
     }) => {
-      if (inFlight.current.chat) return;
+      if (inFlight.current.chat || chatRef.current) return;
       inFlight.current.chat = true;
       setState(s => ({ ...s, chatState: AiModelState.Loading }));
       try {
@@ -128,7 +127,8 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         });
         chatRef.current = chat;
         setState(s => ({ ...s, chatState: AiModelState.Ready }));
-      } catch {
+      } catch (error) {
+        devLog('AiService error', error);
         setState(s => ({ ...s, chatState: AiModelState.Error }));
       } finally {
         inFlight.current.chat = false;
@@ -145,7 +145,8 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       sampler?: SamplerConfigInterface;
       contextSize?: number;
     }) => {
-      if (inFlight.current.chatWithToolCalling) return;
+      if (inFlight.current.chatWithToolCalling || chatWithToolCallingRef.current)
+        return;
       inFlight.current.chatWithToolCalling = true;
       setState(s => ({
         ...s,
@@ -166,7 +167,8 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
           ...s,
           chatWithToolCallingState: AiModelState.Ready,
         }));
-      } catch {
+      } catch (error) {
+        devLog('AiService error', error);
         setState(s => ({
           ...s,
           chatWithToolCallingState: AiModelState.Error,
@@ -184,7 +186,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       systemPrompt?: string;
       contextSize?: number;
     }) => {
-      if (inFlight.current.visionChat) return;
+      if (inFlight.current.visionChat || visionChatRef.current) return;
       inFlight.current.visionChat = true;
       setState(s => ({ ...s, visionChatState: AiModelState.Loading }));
       try {
@@ -199,7 +201,8 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         });
         visionChatRef.current = chat;
         setState(s => ({ ...s, visionChatState: AiModelState.Ready }));
-      } catch {
+      } catch (error) {
+        devLog('AiService error', error);
         setState(s => ({ ...s, visionChatState: AiModelState.Error }));
       } finally {
         inFlight.current.visionChat = false;
@@ -211,7 +214,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
   // Embeddings
   const createEncoder = useCallback(
     async (opts?: { useGpu?: boolean; contextSize?: number }) => {
-      if (inFlight.current.encoder) return;
+      if (inFlight.current.encoder || encoderRef.current) return;
       inFlight.current.encoder = true;
       setState(s => ({ ...s, encoderState: AiModelState.Loading }));
       try {
@@ -224,7 +227,8 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         const encoder = new Encoder(model, opts?.contextSize);
         encoderRef.current = encoder;
         setState(s => ({ ...s, encoderState: AiModelState.Ready }));
-      } catch {
+      } catch (error) {
+        devLog('AiService error', error);
         setState(s => ({ ...s, encoderState: AiModelState.Error }));
       } finally {
         inFlight.current.encoder = false;
@@ -236,7 +240,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
   // ReRanker
   const createCrossEncoder = useCallback(
     async (opts?: { useGpu?: boolean; contextSize?: number }) => {
-      if (inFlight.current.crossEncoder) return;
+      if (inFlight.current.crossEncoder || crossEncoderRef.current) return;
       inFlight.current.crossEncoder = true;
       setState(s => ({ ...s, crossEncoderState: AiModelState.Loading }));
       try {
@@ -249,7 +253,8 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         const crossEncoder = new CrossEncoder(model, opts?.contextSize);
         crossEncoderRef.current = crossEncoder;
         setState(s => ({ ...s, crossEncoderState: AiModelState.Ready }));
-      } catch {
+      } catch (error) {
+        devLog('AiService error', error);
         setState(s => ({ ...s, crossEncoderState: AiModelState.Error }));
       } finally {
         inFlight.current.crossEncoder = false;

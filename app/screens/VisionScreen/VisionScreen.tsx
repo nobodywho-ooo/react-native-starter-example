@@ -4,7 +4,7 @@ import { useStyled } from 'hooks';
 import { Text, Button } from 'components';
 import { useAiService } from 'services';
 import { Prompt } from 'react-native-nobodywho';
-import { getAssetPath } from 'helpers';
+import { devLog, getAssetPath } from 'helpers';
 
 import styles from './VisionScreen.styles';
 
@@ -32,7 +32,7 @@ export const VisionScreen: React.FC = () => {
         setResult(accumulated);
       }
     } catch (error) {
-      console.log('error', error);
+      devLog('VisionScreen error', error);
     } finally {
       setIsStreaming(false);
     }

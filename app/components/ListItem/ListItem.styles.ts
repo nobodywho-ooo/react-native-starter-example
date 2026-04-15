@@ -28,4 +28,7 @@ export default StyleSheet.create({
   chevron: {
     marginLeft: 8,
   },
+  disabled: {
+    opacity: 0.4,
+  },
 });

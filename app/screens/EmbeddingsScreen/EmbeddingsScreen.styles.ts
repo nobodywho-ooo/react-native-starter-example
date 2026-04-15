@@ -7,5 +7,12 @@ export default StyleSheet.create({
     ...Layout.container,
     paddingTop: 24,
   },
-  button: { marginBottom: 16 },
+  document: { paddingTop: 8 },
+  button: { marginTop: 16, marginBottom: 16 },
+  spinner: {
+    alignSelf: 'center',
+    paddingVertical: 24,
+  },
+  queryLabel: { paddingTop: 8, fontStyle: 'italic' },
+  bestMatch: { paddingTop: 8, fontWeight: '600' },
 });

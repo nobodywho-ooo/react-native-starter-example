@@ -25,12 +25,17 @@ export const ListItem: React.FC<ListItemProps> = ({
   iosIconName,
   androidIconName,
   iconBackgroundColor,
+  disabled,
   ...props
 }) => {
   const { colors } = useStyled();
 
   return (
-    <Pressable style={styles.container} {...props}>
+    <Pressable
+      style={[styles.container, disabled && styles.disabled]}
+      disabled={disabled}
+      {...props}
+    >
       <View
         style={[styles.iconContainer, { backgroundColor: iconBackgroundColor }]}
       >
