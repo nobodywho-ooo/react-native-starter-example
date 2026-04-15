@@ -23,6 +23,24 @@ npm run iOS
 
 **Note:** For iOS, if you have issues with metro, run the project on Xcode and then run `npm start`.
 
+iOS cleanup
+
+```sh
+cd ios && pod deintegrate && pod cache clean --all && pod install && cd ..
+```
+
+Then clean the Xcode build cache and run:
+
+```sh
+npm start --reset-cache
+```
+
+Watchman cleanup
+
+```sh
+watchman watch-del-all && watchman shutdown-server
+```
+
 ---
 
 ## Feedback & Contributions
@@ -31,3 +49,7 @@ We welcome your feedback and ideas!
 
 - **Bug Reports & Improvements**: Open an issue on the **[Issues](https://github.com/nobodywho-ooo/electron-starter-example/issues)** page.
 - **Feature Requests & Questions**: Join the discussion on **[Discussions](https://github.com/nobodywho-ooo/electron-starter-example/discussions)**.
+
+```
+
+```
