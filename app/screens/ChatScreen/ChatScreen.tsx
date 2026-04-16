@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, View, Platform, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Message, Role } from 'react-native-nobodywho';
@@ -106,6 +106,11 @@ export const ChatScreen: React.FC = () => {
   const footerHeight =
     paddingBottom + INPUT_BAR_BOTTOM_GAP * 2 + InputBar.height;
 
+  const ListFooter = useMemo(
+    () => <View style={{ height: footerHeight }} />,
+    [footerHeight],
+  );
+
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
       {messages.length === 0 ? (
@@ -120,7 +125,7 @@ export const ChatScreen: React.FC = () => {
           data={messages}
           style={styles.listContainer}
           contentContainerStyle={styles.listContent}
-          ListFooterComponent={<View style={{ height: footerHeight }} />}
+          ListFooterComponent={ListFooter}
           keyExtractor={(_, index) => index.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <MessageListItem message={item} />}
