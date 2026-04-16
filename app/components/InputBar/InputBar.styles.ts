@@ -2,6 +2,19 @@ import { StyleSheet } from 'react-native';
 
 export const INPUT_BAR_HEIGHT = 48;
 
+export const getBoxShadow = (shadowColor: string) => ({
+  boxShadow: [
+    {
+      offsetX: 0,
+      offsetY: 0,
+      blurRadius: '15px' as const,
+      spreadDistance: '4px' as const,
+      color: shadowColor,
+      inset: false,
+    },
+  ],
+});
+
 export const styles = StyleSheet.create({
   inputBarOuter: {
     position: 'absolute',

@@ -14,7 +14,7 @@ import {
 import { MaterialSymbol, SFSymbol } from '@react-navigation/native';
 import { useStyled } from 'hooks';
 
-import { styles, INPUT_BAR_HEIGHT } from './InputBar.styles';
+import { styles, getBoxShadow, INPUT_BAR_HEIGHT } from './InputBar.styles';
 import { isIOS } from 'helpers';
 
 const getInputWrapperProps = (isLiquidGlassSupported: boolean) =>
@@ -49,18 +49,7 @@ export const InputBar: React.FC<InputBarProps> & { height: number } = ({
       <InputWrapper
         style={[
           styles.inputBarInner,
-          !isLiquidGlassSupported && {
-            boxShadow: [
-              {
-                offsetX: 0,
-                offsetY: 0,
-                blurRadius: '15px',
-                spreadDistance: '4px',
-                color: colors.shadow,
-                inset: false,
-              },
-            ],
-          },
+          !isLiquidGlassSupported && getBoxShadow(colors.shadow),
           !isLiquidGlassSupported && {
             backgroundColor: colors.surfaceSecondary,
           },
@@ -115,14 +104,22 @@ const InputBarAction: React.FC<InputBarActionProps> = ({
     );
   }
 
+  let color = colors.primary;
+  let fontWeight: '500' | '600' = '500';
+
+  if (value === '') {
+    color = colors.onSurfaceVariant;
+    fontWeight = '600';
+  }
+
   return (
     <Pressable onPress={onSend} style={styles.sendButton}>
       <Text
         style={[
           styles.sendButtonText,
           {
-            color: value === '' ? colors.onSurfaceVariant : colors.primary,
-            fontWeight: value != '' ? '600' : '500',
+            color: color,
+            fontWeight: fontWeight,
           },
         ]}
       >
