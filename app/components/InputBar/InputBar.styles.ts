@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   inputBarInner: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     borderRadius: 24,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -21,7 +21,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     maxHeight: 100,
-    paddingVertical: 4,
   },
   sendButton: {
     marginLeft: 8,
