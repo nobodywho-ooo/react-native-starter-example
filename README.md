@@ -29,6 +29,10 @@ iOS cleanup
 cd ios && pod deintegrate && pod cache clean --all && pod install && cd ..
 ```
 
+```sh
+cd ios && bundle install && bundle exec pod install
+```
+
 Then clean the Xcode build cache and run:
 
 ```sh

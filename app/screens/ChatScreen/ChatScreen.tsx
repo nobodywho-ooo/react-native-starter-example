@@ -3,7 +3,7 @@ import { FlatList, View, Platform, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Message, Role } from 'react-native-nobodywho';
 import { InputBar, MessageListItem, Text } from 'components';
-import { useStyled } from 'hooks';
+import { useStyled, useTabBarBottomPadding } from 'hooks';
 import { useAiService } from 'services';
 
 import styles from './ChatScreen.styles';
@@ -19,7 +19,7 @@ export const ChatScreen: React.FC = () => {
   const { chat: currentChat } = useAiService();
   const insets = useSafeAreaInsets();
   // Use useBottomTabBarHeight when available, see https://github.com/react-navigation/react-navigation/discussions/12949?sort=new
-  const TAB_BAR_HEIGHT = Platform.OS === 'ios' ? 50 : 80;
+  const paddingBottom = useTabBarBottomPadding();
   const isKeyboardVisible = keyboardHeight > 0;
 
   useEffect(() => {
@@ -94,7 +94,7 @@ export const ChatScreen: React.FC = () => {
     ? keyboardHeight +
       (Platform.OS === 'android' ? insets.bottom : 0) +
       INPUT_BAR_BOTTOM_GAP
-    : TAB_BAR_HEIGHT + insets.bottom + INPUT_BAR_BOTTOM_GAP;
+    : paddingBottom + INPUT_BAR_BOTTOM_GAP;
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>

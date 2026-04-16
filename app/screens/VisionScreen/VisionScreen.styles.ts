@@ -14,7 +14,7 @@ export default StyleSheet.create({
     marginBottom: 16,
   },
   subHeader: { paddingTop: 8, paddingBottom: 4 },
-  imageDescriptionText: { paddingTop: 16 },
+  markdownContainer: { paddingVertical: 24 },
   spinner: {
     alignSelf: 'center',
     paddingVertical: 24,

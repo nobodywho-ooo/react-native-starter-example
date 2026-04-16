@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, ViewStyle, StyleProp } from 'react-native';
+import { View } from 'react-native';
+import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 import { Message, Role } from 'react-native-nobodywho';
 import { useStyled } from 'hooks';
 import { Text } from '../Text/Text';
@@ -14,24 +15,24 @@ const MessageListItem: React.FC<MessageListItemProps> = ({ message }) => {
   const { content, role } = message.inner;
   const { colors } = useStyled();
 
-  let container: StyleProp<ViewStyle>;
-  switch (role) {
-    case Role.User:
-      container = [
-        styles.userContainer,
-        { backgroundColor: colors.surfaceContainer },
-      ];
-      break;
-    case Role.Assistant:
-    default:
-      container = styles.assistantContainer;
-      break;
+  if (role == Role.User) {
+    return (
+      <View
+        style={[
+          styles.userContainer,
+          { backgroundColor: colors.surfaceContainer },
+        ]}
+      >
+        <Text style={styles.text}>{content}</Text>
+      </View>
+    );
   }
 
   return (
-    <View style={container}>
-      <Text style={styles.text}>{content}</Text>
-    </View>
+    <EnrichedMarkdownText
+      containerStyle={styles.assistantContainer}
+      markdown={content}
+    />
   );
 };
 
