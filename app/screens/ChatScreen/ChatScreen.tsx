@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, View, Platform, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Message, Role } from 'react-native-nobodywho';
 import { InputBar, MessageListItem, Text } from 'components';
 import { useStyled, useTabBarBottomPadding } from 'hooks';
 import { useAiService } from 'services';
+import { isAndroid } from 'helpers';
 
 import styles from './ChatScreen.styles';
 
@@ -17,10 +18,19 @@ export const ChatScreen: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const { colors } = useStyled();
   const { chat: currentChat } = useAiService();
+  const flatListRef = useRef<FlatList>(null);
   const insets = useSafeAreaInsets();
   // Use useBottomTabBarHeight when available, see https://github.com/react-navigation/react-navigation/discussions/12949?sort=new
   const paddingBottom = useTabBarBottomPadding();
   const isKeyboardVisible = keyboardHeight > 0;
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 150);
+    }
+  }, [messages]);
 
   useEffect(() => {
     const showEvent =
@@ -91,10 +101,10 @@ export const ChatScreen: React.FC = () => {
   };
 
   const bottomOffset = isKeyboardVisible
-    ? keyboardHeight +
-      (Platform.OS === 'android' ? insets.bottom : 0) +
-      INPUT_BAR_BOTTOM_GAP
+    ? keyboardHeight + (isAndroid ? insets.bottom : 0) + INPUT_BAR_BOTTOM_GAP
     : paddingBottom + INPUT_BAR_BOTTOM_GAP;
+  const footerHeight =
+    paddingBottom + INPUT_BAR_BOTTOM_GAP * 2 + InputBar.height;
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
@@ -106,12 +116,11 @@ export const ChatScreen: React.FC = () => {
         </View>
       ) : (
         <FlatList
+          ref={flatListRef}
           data={messages}
           style={styles.listContainer}
-          contentContainerStyle={[
-            styles.listContent,
-            { paddingBottom: bottomOffset + InputBar.height },
-          ]}
+          contentContainerStyle={styles.listContent}
+          ListFooterComponent={<View style={{ height: footerHeight }} />}
           keyExtractor={(_, index) => index.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <MessageListItem message={item} />}
