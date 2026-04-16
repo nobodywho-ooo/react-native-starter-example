@@ -30,6 +30,5 @@ export const styles = StyleSheet.create({
   },
   sendButtonText: {
     fontSize: 16,
-    fontWeight: '600',
   },
 });

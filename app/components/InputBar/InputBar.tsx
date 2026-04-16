@@ -11,9 +11,11 @@ import {
   LiquidGlassView,
   isLiquidGlassSupported,
 } from '@callstack/liquid-glass';
+import { MaterialSymbol, SFSymbol } from '@react-navigation/native';
 import { useStyled } from 'hooks';
 
 import { styles, INPUT_BAR_HEIGHT } from './InputBar.styles';
+import { isIOS } from 'helpers';
 
 const getInputWrapperProps = (isLiquidGlassSupported: boolean) =>
   isLiquidGlassSupported
@@ -22,18 +24,21 @@ const getInputWrapperProps = (isLiquidGlassSupported: boolean) =>
         interactive: true,
       }
     : {};
-
 interface InputBarProps {
   value: string;
+  isStreaming: boolean;
   onChangeText: (text: string) => void;
   onSend: () => void;
+  onStop: () => void;
   style?: StyleProp<ViewStyle>;
 }
 
 export const InputBar: React.FC<InputBarProps> & { height: number } = ({
   value,
+  isStreaming,
   onChangeText,
   onSend,
+  onStop,
   style,
 }) => {
   const { colors } = useStyled();
@@ -64,27 +69,65 @@ export const InputBar: React.FC<InputBarProps> & { height: number } = ({
       >
         <TextInput
           style={[styles.textInput, { color: colors.onSurface }]}
-          placeholder="Type a message..."
+          placeholder="Ask something here..."
           placeholderTextColor="#999"
           value={value}
           onChangeText={onChangeText}
           multiline
         />
-        <Pressable onPress={onSend} style={styles.sendButton}>
-          <Text
-            style={[
-              styles.sendButtonText,
-              {
-                color: value === '' ? colors.onSurfaceVariant : colors.primary,
-              },
-            ]}
-          >
-            Send
-          </Text>
-        </Pressable>
+        <InputBarAction
+          isStreaming={isStreaming}
+          value={value}
+          onSend={onSend}
+          onStop={onStop}
+        />
       </InputWrapper>
     </View>
   );
 };
 
 InputBar.height = INPUT_BAR_HEIGHT;
+
+interface InputBarActionProps {
+  isStreaming: boolean;
+  value: string;
+  onSend: () => void;
+  onStop: () => void;
+}
+
+const InputBarAction: React.FC<InputBarActionProps> = ({
+  isStreaming,
+  value,
+  onSend,
+  onStop,
+}) => {
+  const { colors } = useStyled();
+
+  if (isStreaming) {
+    return (
+      <Pressable onPress={onStop}>
+        {isIOS ? (
+          <SFSymbol name="stop.fill" size={28} color={colors.danger} />
+        ) : (
+          <MaterialSymbol name="stop_circle" size={28} color={colors.danger} />
+        )}
+      </Pressable>
+    );
+  }
+
+  return (
+    <Pressable onPress={onSend} style={styles.sendButton}>
+      <Text
+        style={[
+          styles.sendButtonText,
+          {
+            color: value === '' ? colors.onSurfaceVariant : colors.primary,
+            fontWeight: value != '' ? '600' : '500',
+          },
+        ]}
+      >
+        Send
+      </Text>
+    </Pressable>
+  );
+};

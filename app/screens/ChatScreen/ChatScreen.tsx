@@ -6,7 +6,7 @@ import { InputBar, MessageListItem } from 'components';
 import { EmptyChat } from './components/EmptyChat/EmptyChat';
 import { useStyled, useTabBarBottomPadding } from 'hooks';
 import { useAiService } from 'services';
-import { isAndroid } from 'helpers';
+import { isAndroid, isIOS } from 'helpers';
 
 import styles from './ChatScreen.styles';
 
@@ -16,10 +16,11 @@ export const ChatScreen: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const { colors } = useStyled();
   const { chat: currentChat } = useAiService();
   const flatListRef = useRef<FlatList>(null);
+  const streamCancelRef = useRef<(() => void) | null>(null);
   const insets = useSafeAreaInsets();
   // Use useBottomTabBarHeight when available, see https://github.com/react-navigation/react-navigation/discussions/12949?sort=new
   const paddingBottom = useTabBarBottomPadding();
@@ -34,17 +35,13 @@ export const ChatScreen: React.FC = () => {
   }, [messages]);
 
   useEffect(() => {
-    const showEvent =
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
-    const hideEvent =
-      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+    const showEvent = isIOS ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = isIOS ? 'keyboardWillHide' : 'keyboardDidHide';
 
-    const showSub = Keyboard.addListener(showEvent, e => {
-      setKeyboardHeight(e.endCoordinates.height);
-    });
-    const hideSub = Keyboard.addListener(hideEvent, () => {
-      setKeyboardHeight(0);
-    });
+    const showSub = Keyboard.addListener(showEvent, e =>
+      setKeyboardHeight(e.endCoordinates.height),
+    );
+    const hideSub = Keyboard.addListener(hideEvent, () => setKeyboardHeight(0));
 
     return () => {
       showSub.remove();
@@ -53,8 +50,8 @@ export const ChatScreen: React.FC = () => {
   }, []);
 
   const handleSend = async () => {
-    const trimmed = inputText.trim();
-    if (!trimmed || isGenerating) return;
+    const userInput = inputText.trim();
+    if (!userInput || isStreaming) return;
 
     const chat = currentChat.current;
 
@@ -64,7 +61,7 @@ export const ChatScreen: React.FC = () => {
 
     const userMessage = new Message.Message({
       role: Role.User,
-      content: trimmed,
+      content: userInput,
       assets: [],
     });
     const initialAssistantMessage = new Message.Message({
@@ -76,11 +73,13 @@ export const ChatScreen: React.FC = () => {
     setMessages(prev => [...prev, userMessage, initialAssistantMessage]);
     setInputText('');
     Keyboard.dismiss();
-    setIsGenerating(true);
+    setIsStreaming(true);
 
     try {
       let accumulated = '';
-      for await (const token of chat.ask(trimmed)) {
+      const streamResult = chat.ask(userInput);
+
+      for await (const token of streamResult) {
         accumulated += token;
         setMessages(prev => {
           const next = [...prev];
@@ -95,8 +94,18 @@ export const ChatScreen: React.FC = () => {
     } catch (error) {
       console.error('Chat generation failed:', error);
     } finally {
-      setIsGenerating(false);
+      setIsStreaming(false);
     }
+  };
+
+  const stopStreaming = () => {
+    const chat = currentChat.current;
+
+    if (!chat) {
+      return;
+    }
+
+    chat.stopGeneration();
   };
 
   const bottomOffset = isKeyboardVisible
@@ -129,8 +138,10 @@ export const ChatScreen: React.FC = () => {
       )}
       <InputBar
         value={inputText}
+        isStreaming={isStreaming}
         onChangeText={setInputText}
         onSend={handleSend}
+        onStop={stopStreaming}
         style={{ bottom: bottomOffset }}
       />
     </View>
