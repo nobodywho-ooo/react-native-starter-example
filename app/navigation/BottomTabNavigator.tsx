@@ -37,7 +37,7 @@ const BottomTabNavigator = () => {
             },
             android: {
               type: 'materialSymbol',
-              name: 'home',
+              name: 'chat',
             },
           }),
         }}

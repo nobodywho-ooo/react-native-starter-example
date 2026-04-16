@@ -6,11 +6,6 @@ export default StyleSheet.create({
   container: {
     ...Layout.container,
   },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignSelf: 'center',
-  },
   listContainer: {
     flex: 1,
   },

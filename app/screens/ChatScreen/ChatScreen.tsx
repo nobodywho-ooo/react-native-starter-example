@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, View, Platform, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Message, Role } from 'react-native-nobodywho';
-import { InputBar, MessageListItem, Text } from 'components';
+import { InputBar, MessageListItem } from 'components';
+import { EmptyChat } from './components/EmptyChat/EmptyChat';
 import { useStyled, useTabBarBottomPadding } from 'hooks';
 import { useAiService } from 'services';
 import { isAndroid } from 'helpers';
@@ -78,8 +79,6 @@ export const ChatScreen: React.FC = () => {
     setIsGenerating(true);
 
     try {
-      // Accumulate tokens and replace the last (assistant) message on each
-      // one — messages are immutable (Message.inner is frozen), so we rebuild.
       let accumulated = '';
       for await (const token of chat.ask(trimmed)) {
         accumulated += token;
@@ -114,11 +113,7 @@ export const ChatScreen: React.FC = () => {
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
       {messages.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          {!isKeyboardVisible && (
-            <Text style={{ color: colors.onSurface }}>Start a chat</Text>
-          )}
-        </View>
+        !isKeyboardVisible && <EmptyChat />
       ) : (
         <FlatList
           ref={flatListRef}
