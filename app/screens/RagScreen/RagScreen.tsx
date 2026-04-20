@@ -68,11 +68,7 @@ export const RagScreen: React.FC = () => {
       const candidateDocs = similarities.slice(0, 20).map(s => s.doc);
 
       // Stage 2: Precise ranking with cross-encoder
-      const rankedJson = await activeCrossEncoder.rankAndSortJson(
-        query,
-        candidateDocs,
-      );
-      const ranked: [string, number][] = JSON.parse(rankedJson);
+      const ranked = await activeCrossEncoder.rankAndSort(query, candidateDocs);
 
       // Return top 3 most relevant
       setTopResults(ranked.slice(0, 3).map(([doc]) => doc));

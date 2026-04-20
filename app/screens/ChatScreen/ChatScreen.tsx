@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, View, Platform, Keyboard } from 'react-native';
+import { FlatList, View, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Message, Role } from 'react-native-nobodywho';
+import { ChatMessage, Role } from 'react-native-nobodywho';
 import { InputBar, MessageListItem } from 'components';
 import { EmptyChat } from './components/EmptyChat/EmptyChat';
 import { useStyled, useTabBarBottomPadding } from 'hooks';
@@ -13,7 +13,7 @@ import styles from './ChatScreen.styles';
 const INPUT_BAR_BOTTOM_GAP = 14;
 
 export const ChatScreen: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState('');
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -59,16 +59,16 @@ export const ChatScreen: React.FC = () => {
       return;
     }
 
-    const userMessage = new Message.Message({
+    const userMessage: ChatMessage = {
       role: Role.User,
       content: userInput,
       assets: [],
-    });
-    const initialAssistantMessage = new Message.Message({
+    };
+    const initialAssistantMessage: ChatMessage = {
       role: Role.Assistant,
       content: '',
       assets: [],
-    });
+    };
 
     setMessages(prev => [...prev, userMessage, initialAssistantMessage]);
     setInputText('');
@@ -83,11 +83,11 @@ export const ChatScreen: React.FC = () => {
         accumulated += token;
         setMessages(prev => {
           const next = [...prev];
-          next[next.length - 1] = new Message.Message({
+          next[next.length - 1] = {
             role: Role.Assistant,
             content: accumulated,
             assets: [],
-          });
+          };
           return next;
         });
       }

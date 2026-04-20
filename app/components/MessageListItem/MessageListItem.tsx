@@ -1,18 +1,18 @@
 import React from 'react';
 import { View } from 'react-native';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
-import { Message, Role } from 'react-native-nobodywho';
+import { ChatMessage, Role } from 'react-native-nobodywho';
 import { useStyled } from 'hooks';
 import { Text } from '../Text/Text';
 
 import styles from './MessageListItem.styles';
 
 interface MessageListItemProps {
-  message: Message;
+  message: ChatMessage;
 }
 
 const MessageListItem: React.FC<MessageListItemProps> = ({ message }) => {
-  const { content, role } = message.inner;
+  const { content, role } = message;
   const { colors } = useStyled();
 
   if (role == Role.User) {

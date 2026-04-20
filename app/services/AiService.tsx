@@ -10,9 +10,8 @@ import {
   Chat,
   Encoder,
   CrossEncoder,
-  loadModel,
-  SamplerConfigInterface,
   Tool,
+  SamplerConfig,
 } from 'react-native-nobodywho';
 import { devLog, getAssetPath } from 'helpers';
 
@@ -48,14 +47,14 @@ interface AiServiceContextValue extends AiServiceState {
   createChat: (opts?: {
     useGpu?: boolean;
     systemPrompt?: string;
-    sampler?: SamplerConfigInterface;
+    sampler?: SamplerConfig;
     contextSize?: number;
   }) => Promise<void>;
   createToolCallingChat: (opts?: {
     useGpu?: boolean;
     tools?: Tool[];
     systemPrompt?: string;
-    sampler?: SamplerConfigInterface;
+    sampler?: SamplerConfig;
     contextSize?: number;
   }) => Promise<void>;
   createVisionChat: (opts?: {
@@ -110,7 +109,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
     async (opts?: {
       useGpu?: boolean;
       systemPrompt?: string;
-      sampler?: SamplerConfigInterface;
+      sampler?: SamplerConfig;
       contextSize?: number;
     }) => {
       if (inFlight.current.chat || chatRef.current) return;
@@ -142,10 +141,13 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       useGpu?: boolean;
       tools?: Tool[];
       systemPrompt?: string;
-      sampler?: SamplerConfigInterface;
+      sampler?: SamplerConfig;
       contextSize?: number;
     }) => {
-      if (inFlight.current.chatWithToolCalling || chatWithToolCallingRef.current)
+      if (
+        inFlight.current.chatWithToolCalling ||
+        chatWithToolCallingRef.current
+      )
         return;
       inFlight.current.chatWithToolCalling = true;
       setState(s => ({
@@ -191,10 +193,10 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       setState(s => ({ ...s, visionChatState: AiModelState.Loading }));
       try {
         const modelPath = await getAssetPath(ModelName.Chat);
-        const imageModelPath = await getAssetPath(ModelName.Projection);
+        const projectionModelPath = await getAssetPath(ModelName.Projection);
         const chat = await Chat.fromPath({
           modelPath,
-          imageModelPath,
+          projectionModelPath,
           useGpu: opts?.useGpu ?? true,
           systemPrompt: opts?.systemPrompt,
           contextSize: opts?.contextSize,
@@ -219,12 +221,11 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       setState(s => ({ ...s, encoderState: AiModelState.Loading }));
       try {
         const modelPath = await getAssetPath(ModelName.Embedding);
-        const model = await loadModel(
+        const encoder = await Encoder.fromPath({
           modelPath,
-          opts?.useGpu ?? true,
-          undefined,
-        );
-        const encoder = new Encoder(model, opts?.contextSize);
+          useGpu: opts?.useGpu ?? true,
+          contextSize: opts?.contextSize,
+        });
         encoderRef.current = encoder;
         setState(s => ({ ...s, encoderState: AiModelState.Ready }));
       } catch (error) {
@@ -245,12 +246,11 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       setState(s => ({ ...s, crossEncoderState: AiModelState.Loading }));
       try {
         const modelPath = await getAssetPath(ModelName.Reranker);
-        const model = await loadModel(
+        const crossEncoder = await CrossEncoder.fromPath({
           modelPath,
-          opts?.useGpu ?? true,
-          undefined,
-        );
-        const crossEncoder = new CrossEncoder(model, opts?.contextSize);
+          useGpu: opts?.useGpu ?? true,
+          contextSize: opts?.contextSize,
+        });
         crossEncoderRef.current = crossEncoder;
         setState(s => ({ ...s, crossEncoderState: AiModelState.Ready }));
       } catch (error) {
@@ -267,11 +267,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
     chatRef.current = undefined;
     chatWithToolCallingRef.current = undefined;
     visionChatRef.current = undefined;
-
-    // Encoder/CrossEncoder expose uniffiDestroy for deterministic cleanup
-    encoderRef.current?.uniffiDestroy();
     encoderRef.current = undefined;
-    crossEncoderRef.current?.uniffiDestroy();
     crossEncoderRef.current = undefined;
 
     // Reset in-flight flags so a subsequent createX() isn't silently skipped
