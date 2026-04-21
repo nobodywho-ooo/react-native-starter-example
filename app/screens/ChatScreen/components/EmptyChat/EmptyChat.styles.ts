@@ -7,4 +7,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
   },
+  text: {
+    paddingTop: 10,
+  },
 });

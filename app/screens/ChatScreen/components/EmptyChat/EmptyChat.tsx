@@ -25,7 +25,9 @@ export const EmptyChat: React.FC = () => {
           color={colors.onSurfaceVariant}
         />
       )}
-      <Text style={{ color: colors.onSurfaceVariant }}>Start a chat</Text>
+      <Text style={[styles.text, { color: colors.onSurfaceVariant }]}>
+        Start a chat
+      </Text>
     </View>
   );
 };

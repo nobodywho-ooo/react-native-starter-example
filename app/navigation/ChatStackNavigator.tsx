@@ -46,13 +46,12 @@ export const ChatStackNavigator = () => {
         }),
         headerTintColor: colors.onSurface,
         headerTitleStyle: { color: colors.onSurface },
-        headerLargeTitleStyle: { color: colors.onSurface },
       }}
     >
       <Stack.Screen
         name="ChatScreen"
         component={Screen}
-        options={{ title: 'Chat', headerLargeTitleEnabled: true }}
+        options={{ title: 'Chat' }}
       />
     </Stack.Navigator>
   );

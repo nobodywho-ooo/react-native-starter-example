@@ -20,7 +20,6 @@ export const ChatScreen: React.FC = () => {
   const { colors } = useStyled();
   const { chat: currentChat } = useAiService();
   const flatListRef = useRef<FlatList>(null);
-  const streamCancelRef = useRef<(() => void) | null>(null);
   const insets = useSafeAreaInsets();
   // Use useBottomTabBarHeight when available, see https://github.com/react-navigation/react-navigation/discussions/12949?sort=new
   const paddingBottom = useTabBarBottomPadding();
@@ -128,7 +127,7 @@ export const ChatScreen: React.FC = () => {
           ref={flatListRef}
           data={messages}
           style={styles.listContainer}
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={[styles.listContent]}
           ListFooterComponent={ListFooter}
           keyExtractor={(_, index) => index.toString()}
           showsVerticalScrollIndicator={false}

@@ -1,17 +1,18 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, Image, ScrollView } from 'react-native';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 import { Prompt } from 'react-native-nobodywho';
-import { useStyled } from 'hooks';
+import { useStyled, useThemeMode } from 'hooks';
 import { Text, Button } from 'components';
 import { useAiService } from 'services';
-import { devLog, getAssetPath } from 'helpers';
+import { devLog, getAssetPath, getMarkdownStyle } from 'helpers';
 import { useTabBarBottomPadding } from 'hooks';
 
 import styles from './VisionScreen.styles';
 
 export const VisionScreen: React.FC = () => {
   const { colors } = useStyled();
+  const { isDarkMode } = useThemeMode();
   const paddingBottom = useTabBarBottomPadding();
   const { visionChat } = useAiService();
   const [result, setResult] = useState('');
@@ -44,6 +45,11 @@ export const VisionScreen: React.FC = () => {
     }
   }, [visionChat]);
 
+  const markdownStyle = useMemo(
+    () => getMarkdownStyle(isDarkMode, colors.onSurface),
+    [isDarkMode, colors.onSurface],
+  );
+
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
@@ -51,7 +57,7 @@ export const VisionScreen: React.FC = () => {
         styles.container,
         {
           backgroundColor: colors.surface,
-          marginBottom: paddingBottom,
+          paddingBottom: paddingBottom,
         },
       ]}
     >
@@ -82,6 +88,7 @@ export const VisionScreen: React.FC = () => {
         <EnrichedMarkdownText
           containerStyle={styles.markdownContainer}
           markdown={result}
+          markdownStyle={markdownStyle}
         />
       )}
     </ScrollView>

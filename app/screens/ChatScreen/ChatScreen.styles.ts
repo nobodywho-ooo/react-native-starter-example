@@ -10,6 +10,6 @@ export default StyleSheet.create({
     flex: 1,
   },
   listContent: {
-    paddingVertical: 12,
+    paddingBottom: 12,
   },
 });
