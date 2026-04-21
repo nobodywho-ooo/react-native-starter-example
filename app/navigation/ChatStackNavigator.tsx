@@ -41,9 +41,7 @@ export const ChatStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        ...(!isLiquidGlassSupported && {
-          headerStyle: { backgroundColor: colors.surface },
-        }),
+        headerStyle: { backgroundColor: colors.surface },
         headerTintColor: colors.onSurface,
         headerTitleStyle: { color: colors.onSurface },
       }}
