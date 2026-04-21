@@ -7,7 +7,7 @@
 
 This starter app demonstrates the capabilities of **[NobodyWho](https://github.com/nobodywho-ooo/nobodywho)**, a library designed to run LLMs locally and efficiently on any device.
 
-## Getting Started
+## 1. Getting Started
 
 First, you will need to run `npm install`
 
@@ -22,6 +22,35 @@ npm run iOS
 ```
 
 **Note:** For iOS, if you have issues with metro, run `npm start` and then run the project on Xcode.
+
+### 2. Download Models
+
+#### Automated (Recommended)
+
+**Chat only** (minimal setup):
+
+| Platform      | Command                       |
+| ------------- | ----------------------------- |
+| macOS / Linux | `./scripts/download_chat.sh`  |
+| Windows       | `.\scripts\download_chat.ps1` |
+
+**All features** (chat + vision + hearing + embeddings + reranker):
+
+| Platform      | Command                                                                           |
+| ------------- | --------------------------------------------------------------------------------- |
+| macOS / Linux | `./scripts/download_chat_multimodal.sh && ./scripts/download_embedding_rerank.sh` |
+| Windows       | `.\scripts\download_chat_multimodal.ps1; .\scripts\download_embedding_rerank.ps1` |
+
+The scripts download models from Hugging Face, rename them, and place them in the `assets/` folder.
+
+#### Manual Download
+
+You can use any `.gguf` model from Hugging Face. Keep in mind:
+
+- **Tool calling**: the chat model must support function/tool calling.
+- **Vision & Hearing**: the chat and projection model must be compatible with each other.
+
+#### Miscellaneous
 
 iOS cleanup
 
@@ -47,9 +76,5 @@ watchman watch-del-all && watchman shutdown-server
 
 We welcome your feedback and ideas!
 
-- **Bug Reports & Improvements**: Open an issue on the **[Issues](https://github.com/nobodywho-ooo/electron-starter-example/issues)** page.
-- **Feature Requests & Questions**: Join the discussion on **[Discussions](https://github.com/nobodywho-ooo/electron-starter-example/discussions)**.
-
-```
-
-```
+- **Bug Reports & Improvements**: Open an issue on the **[Issues](https://github.com/nobodywho-ooo/react-native-starter-example/issues)** page.
+- **Feature Requests & Questions**: Join the discussion on **[Discussions](https://github.com/nobodywho-ooo/react-native-starter-example/discussions)**.
