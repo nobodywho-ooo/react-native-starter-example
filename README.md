@@ -3,25 +3,20 @@
 [![Mastodon](https://img.shields.io/badge/Mastodon-6364FF?logo=mastodon&logoColor=fff&style=flat-square)](https://mastodon.gamedev.place/@nobodywho)
 [![Docs](https://img.shields.io/badge/Docs-lightblue?style=flat-square)](https://docs.nobodywho.ooo)
 
-# NobodyWho Electron Starter App
+# NobodyWho React Native Starter App
 
 This starter app demonstrates the capabilities of **[NobodyWho](https://github.com/nobodywho-ooo/nobodywho)**, a library designed to run LLMs locally and efficiently on any device.
 
+## Features
+
+- **Chat** — stream responses from a local LLM
+- **Tool calling** — give the model access to custom functions (e.g. weather, calculator)
+- **Vision & Hearing** — image & audio ingestion with a multimodal model
+- **Embeddings & RAG** — semantic search with an embedding model and cross-encoder reranker
+
 ## 1. Getting Started
 
-First, you will need to run `npm install`
-
-Once that is done, run one of the following:
-
-```sh
-# Android
-npm run android
-
-# iOS
-npm run iOS
-```
-
-**Note:** For iOS, if you have issues with metro, run `npm start` and then run the project on Xcode.
+First, you will need to run `npm install` to install dependencies.
 
 ### 2. Download Models
 
@@ -49,6 +44,18 @@ You can use any `.gguf` model from Hugging Face. Keep in mind:
 
 - **Tool calling**: the chat model must support function/tool calling.
 - **Vision & Hearing**: the chat and projection model must be compatible with each other.
+
+### 3. Run the App
+
+```sh
+# Android
+npm run android
+
+# iOS
+npm run iOS
+```
+
+**Note:** For iOS, if you have issues with metro, run `npm start` and then run the project on Xcode.
 
 #### Miscellaneous
 
