@@ -65,12 +65,6 @@ iOS cleanup
 cd ios && rm ios/Podfile.lock && rm -rf ios/Pods && pod install && cd ..
 ```
 
-Then clean the Xcode build cache and run:
-
-```sh
-npm start --reset-cache
-```
-
 Watchman cleanup
 
 ```sh
