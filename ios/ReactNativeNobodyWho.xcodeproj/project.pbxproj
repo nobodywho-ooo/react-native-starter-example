@@ -63,8 +63,8 @@
 				AA000002000000000000AAA2 /* projection-model.gguf */,
 				AA000003000000000000AAA3 /* embedding-model.gguf */,
 				AA000004000000000000AAA4 /* reranker-model.gguf */,
-			AA000005000000000000AAA5 /* image-1.png */,
-			AA000006000000000000AAA6 /* image-2.png */,
+				AA000005000000000000AAA5 /* image-1.png */,
+				AA000006000000000000AAA6 /* image-2.png */,
 			);
 			name = ReactNativeNobodyWho;
 			sourceTree = "<group>";
@@ -183,8 +183,8 @@
 				BB000002000000000000BBB2 /* projection-model.gguf in Resources */,
 				BB000003000000000000BBB3 /* embedding-model.gguf in Resources */,
 				BB000004000000000000BBB4 /* reranker-model.gguf in Resources */,
-			BB000005000000000000BBB5 /* image-1.png in Resources */,
-			BB000006000000000000BBB6 /* image-2.png in Resources */,
+				BB000005000000000000BBB5 /* image-1.png in Resources */,
+				BB000006000000000000BBB6 /* image-2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,16 +21,12 @@ npm run android
 npm run iOS
 ```
 
-**Note:** For iOS, if you have issues with metro, run the project on Xcode and then run `npm start`.
+**Note:** For iOS, if you have issues with metro, run `npm start` and then run the project on Xcode.
 
 iOS cleanup
 
 ```sh
-cd ios && pod deintegrate && pod cache clean --all && pod install && cd ..
-```
-
-```sh
-cd ios && bundle install && bundle exec pod install
+cd ios && rm ios/Podfile.lock && rm -rf ios/Pods && pod install && cd ..
 ```
 
 Then clean the Xcode build cache and run:
