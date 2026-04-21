@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2F585BA7BAAD9BBC700250D8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		53B434172F9777B100B7FCF4 /* audio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53B434162F9777B100B7FCF4 /* audio.mp3 */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B4EA5B9068B069840FD89F6D /* libPods-ReactNativeNobodyWho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51C62BCC41FA513F4390E8FB /* libPods-ReactNativeNobodyWho.a */; };
@@ -27,6 +28,7 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = ReactNativeNobodyWho/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1547C1E776B46421B5A0455A /* Pods-ReactNativeNobodyWho.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeNobodyWho.release.xcconfig"; path = "Target Support Files/Pods-ReactNativeNobodyWho/Pods-ReactNativeNobodyWho.release.xcconfig"; sourceTree = "<group>"; };
 		51C62BCC41FA513F4390E8FB /* libPods-ReactNativeNobodyWho.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNativeNobodyWho.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		53B434162F9777B100B7FCF4 /* audio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = audio.mp3; path = ../assets/audio.mp3; sourceTree = SOURCE_ROOT; };
 		5D2A463390ECF8C84CAEA0A8 /* Pods-ReactNativeNobodyWho.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeNobodyWho.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativeNobodyWho/Pods-ReactNativeNobodyWho.debug.xcconfig"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ReactNativeNobodyWho/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ReactNativeNobodyWho/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				AA000001000000000000AAA1 /* chat-model.gguf */,
+				53B434162F9777B100B7FCF4 /* audio.mp3 */,
 				AA000002000000000000AAA2 /* projection-model.gguf */,
 				AA000003000000000000AAA3 /* embedding-model.gguf */,
 				AA000004000000000000AAA4 /* reranker-model.gguf */,
@@ -185,6 +188,7 @@
 				BB000004000000000000BBB4 /* reranker-model.gguf in Resources */,
 				BB000005000000000000BBB5 /* image-1.png in Resources */,
 				BB000006000000000000BBB6 /* image-2.png in Resources */,
+				53B434172F9777B100B7FCF4 /* audio.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,9 +241,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ReactNativeNobodyWho/Pods-ReactNativeNobodyWho-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ReactNativeNobodyWho/Pods-ReactNativeNobodyWho-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -254,9 +262,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ReactNativeNobodyWho/Pods-ReactNativeNobodyWho-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ReactNativeNobodyWho/Pods-ReactNativeNobodyWho-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

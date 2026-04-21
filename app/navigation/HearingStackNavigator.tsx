@@ -4,32 +4,32 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { isLiquidGlassSupported } from '@callstack/liquid-glass';
 import { useStyled } from 'hooks';
 import { AiModelState, useAiService } from 'services';
-import { VisionScreen, ErrorScreen, LoadingScreen } from 'screens';
+import { HearingScreen, ErrorScreen, LoadingScreen } from 'screens';
 
 const Stack = createNativeStackNavigator();
 
-export const VisionStackNavigator = () => {
+export const HearingStackNavigator = () => {
   const { colors } = useStyled();
   const { visionHearingChatState, createVisionHearingChat } = useAiService();
 
-  const initVisionChat = useCallback(async () => {
+  const initHearingChat = useCallback(async () => {
     await createVisionHearingChat();
   }, [createVisionHearingChat]);
 
   useEffect(() => {
-    initVisionChat();
-  }, [initVisionChat]);
+    initHearingChat();
+  }, [initHearingChat]);
 
   const ErrorScreenWithRetry = useMemo(
-    () => () => <ErrorScreen onRetry={initVisionChat} />,
-    [initVisionChat],
+    () => () => <ErrorScreen onRetry={initHearingChat} />,
+    [initHearingChat],
   );
 
   let Screen = LoadingScreen;
 
   switch (visionHearingChatState) {
     case AiModelState.Ready:
-      Screen = VisionScreen;
+      Screen = HearingScreen;
       break;
     case AiModelState.Error:
       Screen = ErrorScreenWithRetry;
@@ -50,10 +50,10 @@ export const VisionStackNavigator = () => {
       }}
     >
       <Stack.Screen
-        name="VisionScreen"
+        name="HearingScreen"
         component={Screen}
         options={{
-          title: 'Vision',
+          title: 'Hearing',
           headerLargeTitleEnabled: true,
         }}
       />

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { ActivityIndicator, Image, ScrollView } from 'react-native';
+import { ActivityIndicator, ScrollView } from 'react-native';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 import { Prompt } from 'react-native-nobodywho';
 import { useStyled, useThemeMode } from 'hooks';
@@ -8,9 +8,9 @@ import { useAiService } from 'services';
 import { devLog, getAssetPath, getMarkdownStyle } from 'helpers';
 import { useTabBarBottomPadding } from 'hooks';
 
-import styles from './VisionScreen.styles';
+import styles from './HearingScreen.styles';
 
-export const VisionScreen: React.FC = () => {
+export const HearingScreen: React.FC = () => {
   const { colors } = useStyled();
   const { isDarkMode } = useThemeMode();
   const paddingBottom = useTabBarBottomPadding();
@@ -18,20 +18,17 @@ export const VisionScreen: React.FC = () => {
   const [result, setResult] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
 
-  const analyse = useCallback(async () => {
+  const transcribe = useCallback(async () => {
     const activeChat = visionHearingChat.current;
     if (!activeChat) return;
 
     setResult('');
     setIsStreaming(true);
     try {
-      const image1Path = await getAssetPath('image-1.png');
-      const image2Path = await getAssetPath('image-2.png');
+      const audioPath = await getAssetPath('audio.mp3');
       const prompt = new Prompt([
-        Prompt.Text('Tell me what you see in the first image.'),
-        Prompt.Image(image1Path),
-        Prompt.Text('Also tell me what you see in the second image.'),
-        Prompt.Image(image2Path),
+        Prompt.Text('Tell me what you hear in the audio. Transcribe'),
+        Prompt.Audio(audioPath),
       ]);
       let accumulated = '';
       for await (const token of activeChat.ask(prompt)) {
@@ -39,7 +36,7 @@ export const VisionScreen: React.FC = () => {
         setResult(accumulated);
       }
     } catch (error) {
-      devLog('VisionScreen error', error);
+      devLog('HearingScreen error', error);
     } finally {
       setIsStreaming(false);
     }
@@ -61,25 +58,12 @@ export const VisionScreen: React.FC = () => {
         },
       ]}
     >
-      <Image
-        source={require('../../../assets/image-1.png')}
-        style={styles.image}
-        resizeMode="cover"
-      />
-      <Image
-        source={require('../../../assets/image-2.png')}
-        style={styles.image}
-        resizeMode="cover"
-      />
-      <Text variant="h3">Analyze & Describe</Text>
-      <Text style={styles.subHeader}>
-        Find out what the model can see in the images.
-      </Text>
+      <Text variant="h3">Transcribe audio.mp3</Text>
       <Button
         style={styles.button}
-        title={isStreaming ? 'Analyzing...' : 'Analyze'}
+        title={isStreaming ? 'Getting speech...' : 'Get speech'}
         variant="primary"
-        onPress={analyse}
+        onPress={transcribe}
         disabled={isStreaming}
       />
       {isStreaming && result === '' ? (

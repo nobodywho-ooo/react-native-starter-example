@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { isLiquidGlassSupported } from '@callstack/liquid-glass';
 import { MoreStackNavigator } from './MoreStackNavigator';
 import { VisionStackNavigator } from './VisionStackNavigator';
+import { HearingStackNavigator } from './HearingStackNavigator';
 import { ChatStackNavigator } from './ChatStackNavigator';
 import { Platform } from 'react-native';
 import { useStyled } from 'hooks';
@@ -59,6 +60,23 @@ const BottomTabNavigator = () => {
           }),
         }}
         component={VisionStackNavigator}
+      />
+      <Tab.Screen
+        name="Hearing"
+        options={{
+          headerShown: false,
+          tabBarIcon: Platform.select({
+            ios: {
+              type: 'sfSymbol',
+              name: 'ear.fill',
+            },
+            android: {
+              type: 'materialSymbol',
+              name: 'hearing',
+            },
+          }),
+        }}
+        component={HearingStackNavigator}
       />
       <Tab.Screen
         name="More"

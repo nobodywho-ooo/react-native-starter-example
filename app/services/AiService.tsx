@@ -32,7 +32,7 @@ enum ModelName {
 interface AiServiceState {
   chatState: AiModelState;
   chatWithToolCallingState: AiModelState;
-  visionChatState: AiModelState;
+  visionHearingChatState: AiModelState;
   encoderState: AiModelState;
   crossEncoderState: AiModelState;
 }
@@ -40,7 +40,7 @@ interface AiServiceState {
 interface AiServiceContextValue extends AiServiceState {
   chat: React.RefObject<Chat | undefined>;
   chatWithToolCalling: React.RefObject<Chat | undefined>;
-  visionChat: React.RefObject<Chat | undefined>;
+  visionHearingChat: React.RefObject<Chat | undefined>;
   encoder: React.RefObject<Encoder | undefined>;
   crossEncoder: React.RefObject<CrossEncoder | undefined>;
 
@@ -57,7 +57,7 @@ interface AiServiceContextValue extends AiServiceState {
     sampler?: SamplerConfig;
     contextSize?: number;
   }) => Promise<void>;
-  createVisionChat: (opts?: {
+  createVisionHearingChat: (opts?: {
     useGpu?: boolean;
     systemPrompt?: string;
     contextSize?: number;
@@ -80,7 +80,7 @@ const AiServiceContext = createContext<AiServiceContextValue | undefined>(
 const _initialState: AiServiceState = {
   chatState: AiModelState.NotLoaded,
   chatWithToolCallingState: AiModelState.NotLoaded,
-  visionChatState: AiModelState.NotLoaded,
+  visionHearingChatState: AiModelState.NotLoaded,
   encoderState: AiModelState.NotLoaded,
   crossEncoderState: AiModelState.NotLoaded,
 };
@@ -94,14 +94,14 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
   const inFlight = useRef({
     chat: false,
     chatWithToolCalling: false,
-    visionChat: false,
+    visionHearingChat: false,
     encoder: false,
     crossEncoder: false,
   });
 
   const chatRef = useRef<Chat | undefined>(undefined);
   const chatWithToolCallingRef = useRef<Chat | undefined>(undefined);
-  const visionChatRef = useRef<Chat | undefined>(undefined);
+  const visionHearingChatRef = useRef<Chat | undefined>(undefined);
   const encoderRef = useRef<Encoder | undefined>(undefined);
   const crossEncoderRef = useRef<CrossEncoder | undefined>(undefined);
 
@@ -182,15 +182,16 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
     [],
   );
 
-  const createVisionChat = useCallback(
+  const createVisionHearingChat = useCallback(
     async (opts?: {
       useGpu?: boolean;
       systemPrompt?: string;
       contextSize?: number;
     }) => {
-      if (inFlight.current.visionChat || visionChatRef.current) return;
-      inFlight.current.visionChat = true;
-      setState(s => ({ ...s, visionChatState: AiModelState.Loading }));
+      if (inFlight.current.visionHearingChat || visionHearingChatRef.current)
+        return;
+      inFlight.current.visionHearingChat = true;
+      setState(s => ({ ...s, visionHearingChatState: AiModelState.Loading }));
       try {
         const modelPath = await getAssetPath(ModelName.Chat);
         const projectionModelPath = await getAssetPath(ModelName.Projection);
@@ -201,13 +202,13 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
           systemPrompt: opts?.systemPrompt,
           contextSize: opts?.contextSize,
         });
-        visionChatRef.current = chat;
-        setState(s => ({ ...s, visionChatState: AiModelState.Ready }));
+        visionHearingChatRef.current = chat;
+        setState(s => ({ ...s, visionHearingChatState: AiModelState.Ready }));
       } catch (error) {
         devLog('AiService error', error);
-        setState(s => ({ ...s, visionChatState: AiModelState.Error }));
+        setState(s => ({ ...s, visionHearingChatState: AiModelState.Error }));
       } finally {
-        inFlight.current.visionChat = false;
+        inFlight.current.visionHearingChat = false;
       }
     },
     [],
@@ -266,7 +267,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
   const dispose = useCallback(() => {
     chatRef.current = undefined;
     chatWithToolCallingRef.current = undefined;
-    visionChatRef.current = undefined;
+    visionHearingChatRef.current = undefined;
     encoderRef.current = undefined;
     crossEncoderRef.current = undefined;
 
@@ -274,7 +275,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
     // if dispose ran while a load was pending.
     inFlight.current.chat = false;
     inFlight.current.chatWithToolCalling = false;
-    inFlight.current.visionChat = false;
+    inFlight.current.visionHearingChat = false;
     inFlight.current.encoder = false;
     inFlight.current.crossEncoder = false;
 
@@ -286,12 +287,12 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       ...state,
       chat: chatRef,
       chatWithToolCalling: chatWithToolCallingRef,
-      visionChat: visionChatRef,
+      visionHearingChat: visionHearingChatRef,
       encoder: encoderRef,
       crossEncoder: crossEncoderRef,
       createChat,
       createToolCallingChat,
-      createVisionChat,
+      createVisionHearingChat,
       createEncoder,
       createCrossEncoder,
       dispose,
@@ -300,7 +301,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       state,
       createChat,
       createToolCallingChat,
-      createVisionChat,
+      createVisionHearingChat,
       createEncoder,
       createCrossEncoder,
       dispose,

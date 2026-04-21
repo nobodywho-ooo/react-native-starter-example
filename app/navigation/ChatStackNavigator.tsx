@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { isLiquidGlassSupported } from '@callstack/liquid-glass';
 import { useStyled } from 'hooks';
 import { AiModelState, useAiService } from 'services';
-import { ChatScreen, ErrorScreen, LoadingScreen } from '../screens';
+import { ChatScreen, ErrorScreen, LoadingScreen } from 'screens';
 
 const Stack = createNativeStackNavigator();
 

@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { isLiquidGlassSupported } from '@callstack/liquid-glass';
-import { EmbeddingsScreen, MoreScreen, RagScreen } from '../screens';
+import { EmbeddingsScreen, MoreScreen, RagScreen } from 'screens';
 import { useStyled } from 'hooks';
 
 const Stack = createNativeStackNavigator();
