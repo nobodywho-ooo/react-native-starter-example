@@ -25,7 +25,6 @@ export const EmbeddingsScreen: React.FC = () => {
 
   const runEmbeddings = useCallback(async () => {
     const activeEncoder = encoder.current;
-    devLog('addd', activeEncoder);
     if (!activeEncoder) return;
 
     setBestMatch('');
