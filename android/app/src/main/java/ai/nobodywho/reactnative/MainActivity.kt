@@ -1,4 +1,4 @@
-package com.reactnativenobodywho
+package ai.nobodywho.reactnative
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

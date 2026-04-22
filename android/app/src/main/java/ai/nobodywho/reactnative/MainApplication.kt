@@ -1,4 +1,4 @@
-package com.reactnativenobodywho
+package ai.nobodywho.reactnative
 
 import android.app.Application
 import com.facebook.react.PackageList

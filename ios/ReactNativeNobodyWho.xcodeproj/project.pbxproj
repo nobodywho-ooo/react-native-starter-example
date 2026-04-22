@@ -294,7 +294,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.reactnative.nobodywho;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.nobodywho.reactnative;
 				PRODUCT_NAME = ReactNativeNobodyWho;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -325,7 +325,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.reactnative.nobodywho;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.nobodywho.reactnative;
 				PRODUCT_NAME = ReactNativeNobodyWho;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_VERSION = 5.0;
