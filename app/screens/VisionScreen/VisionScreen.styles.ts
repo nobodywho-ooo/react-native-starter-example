@@ -19,5 +19,5 @@ export default StyleSheet.create({
     alignSelf: 'center',
     paddingVertical: 24,
   },
-  button: { marginTop: 16 },
+  button: { marginTop: 16, marginBottom: 2 },
 });
