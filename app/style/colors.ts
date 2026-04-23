@@ -24,7 +24,7 @@ export const darkColors = {
   border: '#cacaca',
   onSurfaceVariant: '#d8d8d8',
   shadow: 'rgba(244, 244, 244, 0.48)',
-  tabBarActive: '#e8e8e8',
+  tabBarActive: '#628395',
   tabBarInactive: '#9e9e9e',
 };
 

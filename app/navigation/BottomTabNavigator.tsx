@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { isLiquidGlassSupported } from '@callstack/liquid-glass';
 import { MoreStackNavigator } from './MoreStackNavigator';
 import { VisionStackNavigator } from './VisionStackNavigator';
 import { HearingStackNavigator } from './HearingStackNavigator';
@@ -15,10 +14,8 @@ const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        ...(!isLiquidGlassSupported && {
-          tabBarActiveTintColor: colors.tabBarActive,
-          tabBarInactiveTintColor: colors.tabBarInactive,
-        }),
+        tabBarActiveTintColor: colors.tabBarActive,
+        tabBarInactiveTintColor: colors.tabBarInactive,
         tabBarStyle: {
           backgroundColor: colors.surfaceSecondary,
         },

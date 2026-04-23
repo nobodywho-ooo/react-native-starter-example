@@ -20,6 +20,8 @@ First, you will need to run `npm install` to install dependencies.
 
 ### 2. Download Models
 
+In production, we recommend downloading models on demand — only when needed — using a library like `@dr.pogodin/react-native-fs` for advanced options, or our built-in download method. This keeps your app size small. For development, the simplest approach is to download the models ahead of time and bundle them directly in your assets folder (see script below).
+
 #### Automated (Recommended)
 
 **Chat only** (minimal setup):
@@ -38,12 +40,31 @@ First, you will need to run `npm install` to install dependencies.
 
 The scripts download models from Hugging Face, rename them, and place them in the `assets/` folder.
 
+#### Download with NobodyWho
+
+Load models directly from Hugging Face using `hf://` URLs (e.g. `hf://owner/repo/model.gguf`). Also supports plain HTTP/HTTPS URLs. Models are cached locally and re-used on subsequent loads. Works on Android with proper cache directory selection.
+
+Example:
+
+```dart
+// Download from HuggingFace (cached automatically)
+const model = await Model.load({
+  modelPath: "hf://NobodyWho/Qwen_Qwen3-0.6B-GGUF/Qwen_Qwen3-0.6B-Q4_K_M.gguf",
+});
+```
+
 #### Manual Download
 
-You can use any `.gguf` model from Hugging Face. Keep in mind:
+You can use any `.gguf` model from [Hugging Face](https://huggingface.co/models).
 
-- **Tool calling**: the chat model must support function/tool calling.
-- **Vision & Hearing**: the chat and projection model must be compatible with each other.
+**Chat models** — some worth considering: Qwen, Gemma, LFM, and Ministral, available in [this collection](https://huggingface.co/unsloth/collections).
+
+**Multimodal models** — some examples by modality: [Vision](https://huggingface.co/LiquidAI/LFM2-VL-450M-GGUF/tree/main), [Hearing](https://huggingface.co/ggml-org/ultravox-v0_5-llama-3_2-1b-GGUF/tree/main), [Vision + Hearing](https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/tree/main)
+
+Compatibility notes:
+
+- Most GGUF models will work, but some may fail due to formatting issues. Here are some [models](https://huggingface.co/NobodyWho/collections) we have made sure they work perfectly.
+- For mobile devices, models under 1 GB tend to run smoothly. As a general rule, the device should have at least twice the available RAM as the model file size. Note that available RAM differs from total RAM — iOS typically reserves around 1–2 GB for the kernel and system processes, while Android overhead varies by manufacturer: roughly 2 GB on stock Android (e.g. Pixel devices), and between 2–4 GB on Samsung, Xiaomi, and Oppo devices due to additional services.
 
 ### 3. Run the App
 

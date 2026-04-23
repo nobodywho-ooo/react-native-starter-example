@@ -58,7 +58,7 @@ export const InputBar: React.FC<InputBarProps> & { height: number } = ({
       >
         <TextInput
           style={[styles.textInput, { color: colors.onSurface }]}
-          placeholder="Ask something here..."
+          placeholder="Ask something..."
           placeholderTextColor="#999"
           value={value}
           onChangeText={onChangeText}
@@ -96,7 +96,7 @@ const InputBarAction: React.FC<InputBarActionProps> = ({
     return (
       <Pressable onPress={onStop}>
         {isIOS ? (
-          <SFSymbol name="stop.fill" size={28} color={colors.danger} />
+          <SFSymbol name="stop.circle" size={28} color={colors.danger} />
         ) : (
           <MaterialSymbol name="stop_circle" size={28} color={colors.danger} />
         )}
