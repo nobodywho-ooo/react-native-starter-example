@@ -1,4 +1,4 @@
-![Nobody Who](./preview.png)
+![NobodyWho](./preview.png)
 
 [![Discord](https://img.shields.io/discord/1308812521456799765?logo=discord&style=flat-square)](https://discord.gg/qhaMc2qCYB)
 [![Matrix](https://img.shields.io/badge/Matrix-000?logo=matrix&logoColor=fff)](https://matrix.to/#/#nobodywho:matrix.org)
@@ -26,14 +26,17 @@ In production, we recommend downloading models on demand â€” only when needed â€
 
 #### Automated (Recommended)
 
-**Chat only** (minimal setup):
+**Chat only**
+Minimal setup - fast inference, even on old/budget phone.
 
 | Platform      | Command                       |
 | ------------- | ----------------------------- |
 | macOS / Linux | `./scripts/download_chat.sh`  |
 | Windows       | `.\scripts\download_chat.ps1` |
 
-**All features** (chat + vision + hearing + embeddings + reranker):
+**All features**
+Chat + vision + hearing + embeddings + reranker
+Downloads Gemma 4, which runs well on flagship phone, but can be slow on old/budget phone
 
 | Platform      | Command                                                                           |
 | ------------- | --------------------------------------------------------------------------------- |
@@ -85,13 +88,13 @@ npm run iOS
 iOS cleanup
 
 ```sh
-cd ios && rm ios/Podfile.lock && rm -rf ios/Pods && pod install && cd ..
+make ios-clean
 ```
 
 Watchman cleanup
 
 ```sh
-watchman watch-del-all && watchman shutdown-server
+make clean
 ```
 
 ---
