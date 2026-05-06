@@ -20,6 +20,8 @@ This starter app demonstrates the capabilities of **[NobodyWho](https://github.c
 
 First, you will need to run `npm install` to install dependencies.
 
+For iOS, install pods `cd ios && pod install && cd ..`
+
 ### 2. Download Models
 
 In production, we recommend downloading models on demand — only when needed — using a library like `@dr.pogodin/react-native-fs` for advanced options, or our built-in download method. This keeps your app size small. For development, the simplest approach is to download the models ahead of time and bundle them directly in your assets folder (see script below).
