@@ -47,7 +47,10 @@ export const MoreScreen: React.FC = () => {
             iosIconName="magnifyingglass"
             androidIconName="search"
             iconBackgroundColor="#FF9500"
-            disabled={crossEncoderState === AiModelState.Error}
+            disabled={
+              crossEncoderState === AiModelState.Error ||
+              encoderState === AiModelState.Error
+            }
             // @ts-ignore
             onPress={() => navigation.navigate('RagScreen')}
           />
