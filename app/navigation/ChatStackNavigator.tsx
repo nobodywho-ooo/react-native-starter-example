@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useCallback, useEffect, useMemo } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { isLiquidGlassSupported } from '@callstack/liquid-glass';
 import { useStyled } from 'hooks';
 import { AiModelState, useAiService } from 'services';
 import { ChatScreen, ErrorScreen, LoadingScreen } from 'screens';
