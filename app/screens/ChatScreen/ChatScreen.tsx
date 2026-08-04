@@ -1,10 +1,15 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, View, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Message } from 'react-native-nobodywho';
 import { InputBar, MessageListItem } from 'components';
 import { EmptyChat } from './components/EmptyChat/EmptyChat';
-import { useStyled, useTabBarBottomPadding } from 'hooks';
+import {
+  useSttRecording,
+  useStyled,
+  useTabBarBottomPadding,
+  useTtsPlayback,
+} from 'hooks';
 import { useAiService } from 'services';
 import { isAndroid, isIOS } from 'helpers';
 
@@ -19,6 +24,16 @@ export const ChatScreen: React.FC = () => {
   const [isStreaming, setIsStreaming] = useState(false);
   const { colors } = useStyled();
   const { chat: currentChat } = useAiService();
+  const { loadingIndex, playingIndex, play, stop } = useTtsPlayback();
+  const appendTranscript = useCallback(
+    (text: string) => setInputText(prev => (prev ? `${prev} ${text}` : text)),
+    [],
+  );
+  const {
+    isRecording,
+    isTranscribing,
+    toggle: toggleSpeechToText,
+  } = useSttRecording(appendTranscript);
   const flatListRef = useRef<FlatList>(null);
   const insets = useSafeAreaInsets();
   // Use useBottomTabBarHeight when available, see https://github.com/react-navigation/react-navigation/discussions/12949?sort=new
@@ -115,6 +130,23 @@ export const ChatScreen: React.FC = () => {
     [footerHeight],
   );
 
+  const keyExtractor = useCallback((_: Message, index: number) => `${index}`, []);
+
+  const renderItem = useCallback(
+    ({ item, index }: { item: Message; index: number }) => (
+      <MessageListItem
+        message={item}
+        index={index}
+        isStreaming={isStreaming}
+        isAudioLoading={loadingIndex === index}
+        isPlaying={playingIndex === index}
+        onPlay={play}
+        onStop={stop}
+      />
+    ),
+    [isStreaming, loadingIndex, playingIndex, play, stop],
+  );
+
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
       {messages.length === 0 ? (
@@ -126,18 +158,21 @@ export const ChatScreen: React.FC = () => {
           style={styles.listContainer}
           contentContainerStyle={[styles.listContent]}
           ListFooterComponent={ListFooter}
-          keyExtractor={(_, index) => index.toString()}
+          keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <MessageListItem message={item} />}
+          renderItem={renderItem}
           keyboardDismissMode="interactive"
         />
       )}
       <InputBar
         value={inputText}
         isStreaming={isStreaming}
+        isRecording={isRecording}
+        isTranscribing={isTranscribing}
         onChangeText={setInputText}
         onSend={handleSend}
         onStop={stopStreaming}
+        onToggleSpeechToText={toggleSpeechToText}
         style={{ bottom: bottomOffset }}
       />
     </View>

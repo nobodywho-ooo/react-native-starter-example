@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   Pressable,
+  ActivityIndicator,
   StyleProp,
   ViewStyle,
 } from 'react-native';
@@ -11,34 +12,40 @@ import {
   LiquidGlassView,
   isLiquidGlassSupported,
 } from '@callstack/liquid-glass';
-import { MaterialSymbol, SFSymbol } from '@react-navigation/native';
 import { useStyled } from 'hooks';
+import { IconButton } from 'components';
 
 import { styles, getBoxShadow, INPUT_BAR_HEIGHT } from './InputBar.styles';
-import { isIOS } from 'helpers';
 
-const getInputWrapperProps = (isLiquidGlassSupported: boolean) =>
-  isLiquidGlassSupported
+const getInputWrapperProps = (isLiquidGlassEffectSupported: boolean) =>
+  isLiquidGlassEffectSupported
     ? {
         effect: 'regular' as const,
         interactive: true,
       }
     : {};
+
 interface InputBarProps {
   value: string;
   isStreaming: boolean;
+  isRecording: boolean;
+  isTranscribing: boolean;
   onChangeText: (text: string) => void;
   onSend: () => void;
   onStop: () => void;
+  onToggleSpeechToText: () => void;
   style?: StyleProp<ViewStyle>;
 }
 
 export const InputBar: React.FC<InputBarProps> & { height: number } = ({
   value,
   isStreaming,
+  isRecording,
+  isTranscribing,
   onChangeText,
   onSend,
   onStop,
+  onToggleSpeechToText,
   style,
 }) => {
   const { colors } = useStyled();
@@ -64,12 +71,19 @@ export const InputBar: React.FC<InputBarProps> & { height: number } = ({
           onChangeText={onChangeText}
           multiline
         />
-        <InputBarAction
-          isStreaming={isStreaming}
-          value={value}
-          onSend={onSend}
-          onStop={onStop}
-        />
+        <View style={styles.actionsContainer}>
+          <SpeechToTextButton
+            isRecording={isRecording}
+            isTranscribing={isTranscribing}
+            onPress={onToggleSpeechToText}
+          />
+          <SendButton
+            isStreaming={isStreaming}
+            value={value}
+            onSend={onSend}
+            onStop={onStop}
+          />
+        </View>
       </InputWrapper>
     </View>
   );
@@ -77,14 +91,14 @@ export const InputBar: React.FC<InputBarProps> & { height: number } = ({
 
 InputBar.height = INPUT_BAR_HEIGHT;
 
-interface InputBarActionProps {
+interface SendButtonProps {
   isStreaming: boolean;
   value: string;
   onSend: () => void;
   onStop: () => void;
 }
 
-const InputBarAction: React.FC<InputBarActionProps> = ({
+const SendButton: React.FC<SendButtonProps> = ({
   isStreaming,
   value,
   onSend,
@@ -94,13 +108,13 @@ const InputBarAction: React.FC<InputBarActionProps> = ({
 
   if (isStreaming) {
     return (
-      <Pressable onPress={onStop}>
-        {isIOS ? (
-          <SFSymbol name="stop.circle" size={28} color={colors.danger} />
-        ) : (
-          <MaterialSymbol name="stop_circle" size={28} color={colors.danger} />
-        )}
-      </Pressable>
+      <IconButton
+        icon={{ iosIconName: 'stop.circle', androidIconName: 'stop_circle' }}
+        onPress={onStop}
+        size={28}
+        color={colors.danger}
+        backgroundColor="transparent"
+      />
     );
   }
 
@@ -126,5 +140,37 @@ const InputBarAction: React.FC<InputBarActionProps> = ({
         Send
       </Text>
     </Pressable>
+  );
+};
+
+interface SpeechToTextButtonProps {
+  isRecording: boolean;
+  isTranscribing: boolean;
+  onPress: () => void;
+}
+
+const SpeechToTextButton: React.FC<SpeechToTextButtonProps> = ({
+  isRecording,
+  isTranscribing,
+  onPress,
+}) => {
+  const { colors } = useStyled();
+
+  if (isTranscribing) {
+    return <ActivityIndicator size="small" color={colors.primary} />;
+  }
+
+  return (
+    <IconButton
+      icon={
+        isRecording
+          ? { iosIconName: 'stop.fill', androidIconName: 'stop' }
+          : { iosIconName: 'microphone.fill', androidIconName: 'mic' }
+      }
+      onPress={onPress}
+      size={20}
+      color={isRecording ? colors.danger : colors.primary}
+      backgroundColor="transparent"
+    />
   );
 };

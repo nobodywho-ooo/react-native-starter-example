@@ -23,15 +23,20 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   inputBarInner: {
-    flexDirection: 'row',
-    alignItems: 'center',
     borderRadius: 24,
     paddingHorizontal: 16,
     paddingVertical: 8,
     minHeight: INPUT_BAR_HEIGHT,
   },
+  actionsContainer: {
+    paddingTop: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   textInput: {
     flex: 1,
+    marginTop: 8,
+    marginHorizontal: 8,
     fontSize: 16,
     maxHeight: 100,
   },
