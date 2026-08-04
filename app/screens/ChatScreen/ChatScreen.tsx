@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Message } from 'react-native-nobodywho';
 import { InputBar, MessageListItem } from 'components';
 import { EmptyChat } from './components/EmptyChat/EmptyChat';
-import { useStyled, useTabBarBottomPadding } from 'hooks';
+import { useStyled, useTabBarBottomPadding, useTtsPlayback } from 'hooks';
 import { useAiService } from 'services';
 import { isAndroid, isIOS } from 'helpers';
 
@@ -19,6 +19,7 @@ export const ChatScreen: React.FC = () => {
   const [isStreaming, setIsStreaming] = useState(false);
   const { colors } = useStyled();
   const { chat: currentChat } = useAiService();
+  const { loadingIndex, playingIndex, play, stop } = useTtsPlayback();
   const flatListRef = useRef<FlatList>(null);
   const insets = useSafeAreaInsets();
   // Use useBottomTabBarHeight when available, see https://github.com/react-navigation/react-navigation/discussions/12949?sort=new
@@ -128,7 +129,17 @@ export const ChatScreen: React.FC = () => {
           ListFooterComponent={ListFooter}
           keyExtractor={(_, index) => index.toString()}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <MessageListItem message={item} />}
+          renderItem={({ item, index }) => (
+            <MessageListItem
+              message={item}
+              isStreaming={isStreaming}
+              isAudioLoading={loadingIndex === index}
+              isPlaying={playingIndex === index}
+              onToggleTts={() =>
+                playingIndex === index ? stop() : play(index, item.content)
+              }
+            />
+          )}
           keyboardDismissMode="interactive"
         />
       )}

@@ -15,6 +15,8 @@ This starter app demonstrates the capabilities of **[NobodyWho](https://github.c
 - **Tool calling** — give the model access to custom functions (e.g. weather, calculator)
 - **Vision & Hearing** — image & audio ingestion with a multimodal model
 - **Embeddings & RAG** — semantic search with an embedding model and cross-encoder reranker
+- **Speech to Text** - transcribe audio into text
+- **Text to Speech** - generate natural-sounding speech from text
 
 ## 1. Getting Started
 
