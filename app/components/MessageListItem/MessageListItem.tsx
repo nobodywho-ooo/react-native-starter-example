@@ -9,20 +9,24 @@ import { Text } from '../Text/Text';
 
 import styles from './MessageListItem.styles';
 
-interface MessageListItemProps {
+interface MessageListItemComponentProps {
   message: Message;
+  index: number;
   isStreaming: boolean;
   isAudioLoading: boolean;
   isPlaying: boolean;
-  onToggleTts: () => void;
+  onPlay: (index: number, text: string) => void;
+  onStop: () => void;
 }
 
-const MessageListItem: React.FC<MessageListItemProps> = ({
+const MessageListItemComponent: React.FC<MessageListItemComponentProps> = ({
   message,
+  index,
   isStreaming,
   isAudioLoading,
   isPlaying,
-  onToggleTts,
+  onPlay,
+  onStop,
 }) => {
   const { content, role } = message;
   const { colors } = useStyled();
@@ -47,6 +51,7 @@ const MessageListItem: React.FC<MessageListItemProps> = ({
   }
 
   const iconTtsColor = isStreaming ? colors.primaryDisabled : colors.primary;
+  const onToggleTts = () => (isPlaying ? onStop() : onPlay(index, content));
 
   return (
     <>
@@ -79,5 +84,7 @@ const MessageListItem: React.FC<MessageListItemProps> = ({
     </>
   );
 };
+
+const MessageListItem = React.memo(MessageListItemComponent);
 
 export { MessageListItem };

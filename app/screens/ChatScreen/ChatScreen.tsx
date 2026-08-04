@@ -130,6 +130,23 @@ export const ChatScreen: React.FC = () => {
     [footerHeight],
   );
 
+  const keyExtractor = useCallback((_: Message, index: number) => `${index}`, []);
+
+  const renderItem = useCallback(
+    ({ item, index }: { item: Message; index: number }) => (
+      <MessageListItem
+        message={item}
+        index={index}
+        isStreaming={isStreaming}
+        isAudioLoading={loadingIndex === index}
+        isPlaying={playingIndex === index}
+        onPlay={play}
+        onStop={stop}
+      />
+    ),
+    [isStreaming, loadingIndex, playingIndex, play, stop],
+  );
+
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
       {messages.length === 0 ? (
@@ -141,19 +158,9 @@ export const ChatScreen: React.FC = () => {
           style={styles.listContainer}
           contentContainerStyle={[styles.listContent]}
           ListFooterComponent={ListFooter}
-          keyExtractor={(_, index) => index.toString()}
+          keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => (
-            <MessageListItem
-              message={item}
-              isStreaming={isStreaming}
-              isAudioLoading={loadingIndex === index}
-              isPlaying={playingIndex === index}
-              onToggleTts={() =>
-                playingIndex === index ? stop() : play(index, item.content)
-              }
-            />
-          )}
+          renderItem={renderItem}
           keyboardDismissMode="interactive"
         />
       )}
