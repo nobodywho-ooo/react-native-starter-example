@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@callstack/liquid-glass": "^0.8.0",
+    "@dr.pogodin/react-native-audio": "^1.18.2",
     "@dr.pogodin/react-native-fs": "^2.38.2",
     "@react-navigation/bottom-tabs": "^8.0.0-alpha.46",
     "@react-navigation/native": "^8.0.0-alpha.40",
@@ -22,6 +23,7 @@
     "react-native-nitro-modules": "^0.36.5",
     "react-native-nitro-sound": "^0.2.15",
     "react-native-nobodywho": "2.5.0",
+    "react-native-permissions": "^5.6.1",
     "react-native-safe-area-context": "^5.7.0",
     "react-native-screens": "^4.24.0"
   },

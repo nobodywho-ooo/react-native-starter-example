@@ -14,6 +14,8 @@ import {
   SamplerConfig,
   Tts,
   TtsOptions,
+  STT,
+  SttOptions,
 } from 'react-native-nobodywho';
 import { devLog, getAssetPath } from 'helpers';
 
@@ -38,6 +40,7 @@ interface AiServiceState {
   encoderState: AiModelState;
   crossEncoderState: AiModelState;
   ttsState: AiModelState;
+  sttState: AiModelState;
 }
 
 interface AiServiceContextValue extends AiServiceState {
@@ -47,6 +50,7 @@ interface AiServiceContextValue extends AiServiceState {
   encoder: React.RefObject<Encoder | undefined>;
   crossEncoder: React.RefObject<CrossEncoder | undefined>;
   tts: React.RefObject<Tts | undefined>;
+  stt: React.RefObject<STT | undefined>;
 
   createChat: (opts?: {
     useGpu?: boolean;
@@ -75,6 +79,7 @@ interface AiServiceContextValue extends AiServiceState {
     contextSize?: number;
   }) => Promise<void>;
   createTts: (opts?: Partial<TtsOptions>) => Promise<void>;
+  createStt: (opts?: Partial<SttOptions>) => void;
   dispose: () => void;
 }
 
@@ -89,6 +94,7 @@ const _initialState: AiServiceState = {
   encoderState: AiModelState.NotLoaded,
   crossEncoderState: AiModelState.NotLoaded,
   ttsState: AiModelState.NotLoaded,
+  sttState: AiModelState.NotLoaded,
 };
 
 export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -112,6 +118,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
   const encoderRef = useRef<Encoder | undefined>(undefined);
   const crossEncoderRef = useRef<CrossEncoder | undefined>(undefined);
   const ttsRef = useRef<Tts | undefined>(undefined);
+  const sttRef = useRef<STT | undefined>(undefined);
 
   const createChat = useCallback(
     async (opts?: {
@@ -296,7 +303,23 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
+  // Speech-to-text
+  const createStt = useCallback((opts?: Partial<SttOptions>) => {
+    if (sttRef.current) return;
+    try {
+      sttRef.current = new STT({
+        source: 'hf://onnx-community/whisper-base',
+        ...opts,
+      });
+      setState(s => ({ ...s, sttState: AiModelState.Ready }));
+    } catch (error) {
+      devLog('AiService error', error);
+      setState(s => ({ ...s, sttState: AiModelState.Error }));
+    }
+  }, []);
+
   const dispose = useCallback(() => {
+    sttRef.current = undefined;
     ttsRef.current = undefined;
     chatRef.current = undefined;
     chatWithToolCallingRef.current = undefined;
@@ -325,12 +348,14 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       encoder: encoderRef,
       crossEncoder: crossEncoderRef,
       tts: ttsRef,
+      stt: sttRef,
       createChat,
       createToolCallingChat,
       createVisionHearingChat,
       createEncoder,
       createCrossEncoder,
       createTts,
+      createStt,
       dispose,
     }),
     [
@@ -341,6 +366,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       createEncoder,
       createCrossEncoder,
       createTts,
+      createStt,
       dispose,
     ],
   );

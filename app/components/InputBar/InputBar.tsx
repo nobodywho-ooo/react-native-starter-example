@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   Pressable,
+  ActivityIndicator,
   StyleProp,
   ViewStyle,
 } from 'react-native';
@@ -27,24 +28,28 @@ const getInputWrapperProps = (isLiquidGlassEffectSupported: boolean) =>
 interface InputBarProps {
   value: string;
   isStreaming: boolean;
+  isRecording: boolean;
+  isTranscribing: boolean;
   onChangeText: (text: string) => void;
   onSend: () => void;
   onStop: () => void;
+  onToggleSpeechToText: () => void;
   style?: StyleProp<ViewStyle>;
 }
 
 export const InputBar: React.FC<InputBarProps> & { height: number } = ({
   value,
   isStreaming,
+  isRecording,
+  isTranscribing,
   onChangeText,
   onSend,
   onStop,
+  onToggleSpeechToText,
   style,
 }) => {
   const { colors } = useStyled();
   const InputWrapper = isLiquidGlassSupported ? LiquidGlassView : View;
-
-  const onPressSpeechToText = () => {};
 
   return (
     <View style={[styles.inputBarOuter, style]}>
@@ -58,7 +63,6 @@ export const InputBar: React.FC<InputBarProps> & { height: number } = ({
         ]}
         {...getInputWrapperProps(isLiquidGlassSupported)}
       >
-        <SpeechToTextButton onPress={onPressSpeechToText} />
         <TextInput
           style={[styles.textInput, { color: colors.onSurface }]}
           placeholder="Ask something..."
@@ -67,12 +71,19 @@ export const InputBar: React.FC<InputBarProps> & { height: number } = ({
           onChangeText={onChangeText}
           multiline
         />
-        <SendButton
-          isStreaming={isStreaming}
-          value={value}
-          onSend={onSend}
-          onStop={onStop}
-        />
+        <View style={styles.actionsContainer}>
+          <SpeechToTextButton
+            isRecording={isRecording}
+            isTranscribing={isTranscribing}
+            onPress={onToggleSpeechToText}
+          />
+          <SendButton
+            isStreaming={isStreaming}
+            value={value}
+            onSend={onSend}
+            onStop={onStop}
+          />
+        </View>
       </InputWrapper>
     </View>
   );
@@ -133,18 +144,32 @@ const SendButton: React.FC<SendButtonProps> = ({
 };
 
 interface SpeechToTextButtonProps {
+  isRecording: boolean;
+  isTranscribing: boolean;
   onPress: () => void;
 }
 
-const SpeechToTextButton: React.FC<SpeechToTextButtonProps> = ({ onPress }) => {
+const SpeechToTextButton: React.FC<SpeechToTextButtonProps> = ({
+  isRecording,
+  isTranscribing,
+  onPress,
+}) => {
   const { colors } = useStyled();
+
+  if (isTranscribing) {
+    return <ActivityIndicator size="small" color={colors.primary} />;
+  }
 
   return (
     <IconButton
-      icon={{ iosIconName: 'microphone.fill', androidIconName: 'mic' }}
+      icon={
+        isRecording
+          ? { iosIconName: 'stop.fill', androidIconName: 'stop' }
+          : { iosIconName: 'microphone.fill', androidIconName: 'mic' }
+      }
       onPress={onPress}
       size={20}
-      color={colors.primary}
+      color={isRecording ? colors.danger : colors.primary}
       backgroundColor="transparent"
     />
   );

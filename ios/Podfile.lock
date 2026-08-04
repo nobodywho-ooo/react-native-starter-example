@@ -1984,6 +1984,28 @@ PODS:
     - React-perflogger (= 0.86.2)
     - React-utils (= 0.86.2)
     - ReactNativeDependencies
+  - ReactNativeAudio (1.18.2):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - ReactNativeDependencies (0.86.2)
   - ReactNativeEnrichedMarkdown (0.4.1):
     - hermes-engine
@@ -2031,6 +2053,28 @@ PODS:
     - ReactNativeDependencies
     - Yoga
   - ReactNavigation (8.0.0-alpha.40):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
+  - RNPermissions (5.6.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2183,10 +2227,12 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios/ReactAppDependencyProvider`)
   - ReactCodegen (from `build/generated/ios/ReactCodegen`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "ReactNativeAudio (from `../node_modules/@dr.pogodin/react-native-audio`)"
   - ReactNativeDependencies (from `../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec`)
   - ReactNativeEnrichedMarkdown (from `../node_modules/react-native-enriched-markdown`)
   - "ReactNativeFs (from `../node_modules/@dr.pogodin/react-native-fs`)"
   - "ReactNavigation (from `../node_modules/@react-navigation/native`)"
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -2353,6 +2399,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios/ReactCodegen
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeAudio:
+    :path: "../node_modules/@dr.pogodin/react-native-audio"
   ReactNativeDependencies:
     :podspec: "../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec"
   ReactNativeEnrichedMarkdown:
@@ -2361,6 +2409,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@dr.pogodin/react-native-fs"
   ReactNavigation:
     :path: "../node_modules/@react-navigation/native"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   Yoga:
@@ -2446,14 +2496,16 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 0e13d430eadac8a2ef18515a860d5c59df05b475
   ReactCodegen: 3bbb7de19774794a7428ef623a7b777106cf3737
   ReactCommon: 9002f006f571256348994183f7d4387aa7cf84e8
+  ReactNativeAudio: 0a4ebf9348e1efc5f273a57efe33457b70767c3d
   ReactNativeDependencies: 2bd6854ade79bf1b60586d1ab7813a389df1b6bf
   ReactNativeEnrichedMarkdown: eb66e599bf43a5ea7a72c268fecee5d2b0c8f5d6
   ReactNativeFs: 21026144ac71a65acf6855c52b1a8eb31012bb5d
   ReactNavigation: c904156705d952eb61fbbbeb04f5f3d6edf2fb93
+  RNPermissions: 87f248b44ce6bb46d242f55c9673d1aae821cb7a
   RNScreens: 7118cd7715c226856125b5bece3c4d9abec90356
   uniffi-bindgen-react-native: 80b84792114d89b005d913b7b8d875b36111178f
   Yoga: 9891cfb1c680f64de9c41b09e7453dea33454d2b
 
-PODFILE CHECKSUM: d835400daf67133842f0d29dd8be812639fc8afd
+PODFILE CHECKSUM: 6e52c203474e1d45f37c807f07ef46418b5b9cbe
 
 COCOAPODS: 1.16.2
