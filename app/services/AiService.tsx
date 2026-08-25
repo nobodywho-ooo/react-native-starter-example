@@ -12,10 +12,10 @@ import {
   CrossEncoder,
   Tool,
   SamplerConfig,
-  Tts,
-  TtsOptions,
-  STT,
-  SttOptions,
+  TextToSpeech,
+  TextToSpeechOptions,
+  SpeechToText,
+  SpeechToTextOptions,
 } from 'react-native-nobodywho';
 import { devLog, getAssetPath } from 'helpers';
 
@@ -49,8 +49,8 @@ interface AiServiceContextValue extends AiServiceState {
   visionHearingChat: React.RefObject<Chat | undefined>;
   encoder: React.RefObject<Encoder | undefined>;
   crossEncoder: React.RefObject<CrossEncoder | undefined>;
-  tts: React.RefObject<Tts | undefined>;
-  stt: React.RefObject<STT | undefined>;
+  tts: React.RefObject<TextToSpeech | undefined>;
+  stt: React.RefObject<SpeechToText | undefined>;
 
   createChat: (opts?: {
     useGpu?: boolean;
@@ -78,8 +78,8 @@ interface AiServiceContextValue extends AiServiceState {
     useGpu?: boolean;
     contextSize?: number;
   }) => Promise<void>;
-  createTts: (opts?: Partial<TtsOptions>) => Promise<void>;
-  createStt: (opts?: Partial<SttOptions>) => void;
+  createTts: (opts?: Partial<TextToSpeechOptions>) => Promise<void>;
+  createStt: (opts?: Partial<SpeechToTextOptions>) => void;
   dispose: () => void;
 }
 
@@ -117,8 +117,8 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
   const visionHearingChatRef = useRef<Chat | undefined>(undefined);
   const encoderRef = useRef<Encoder | undefined>(undefined);
   const crossEncoderRef = useRef<CrossEncoder | undefined>(undefined);
-  const ttsRef = useRef<Tts | undefined>(undefined);
-  const sttRef = useRef<STT | undefined>(undefined);
+  const ttsRef = useRef<TextToSpeech | undefined>(undefined);
+  const sttRef = useRef<SpeechToText | undefined>(undefined);
 
   const createChat = useCallback(
     async (opts?: {
@@ -282,17 +282,22 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   // Text-to-speech
-  const createTts = useCallback(async (opts?: Partial<TtsOptions>) => {
-    if (inFlight.current.tts || ttsRef.current) return;
+  const createTts = useCallback(async (opts?: Partial<TextToSpeechOptions>) => {
+    if (inFlight.current.tts || ttsRef.current) {
+      return;
+    }
+
     inFlight.current.tts = true;
     setState(s => ({ ...s, ttsState: AiModelState.Loading }));
+
     try {
-      const tts = await Tts.load({
+      const tts = await TextToSpeech.load({
         source: 'hf://NobodyWho/Kokoro-82M',
         voice: 'bf_emma',
         language: 'en-gb',
         ...opts,
       });
+
       ttsRef.current = tts;
       setState(s => ({ ...s, ttsState: AiModelState.Ready }));
     } catch (error) {
@@ -304,13 +309,14 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   // Speech-to-text
-  const createStt = useCallback((opts?: Partial<SttOptions>) => {
+  const createStt = useCallback(async (opts?: Partial<SpeechToTextOptions>) => {
     if (sttRef.current) return;
     try {
-      sttRef.current = new STT({
+      const stt = await SpeechToText.load({
         source: 'hf://onnx-community/whisper-base',
         ...opts,
       });
+      sttRef.current = stt;
       setState(s => ({ ...s, sttState: AiModelState.Ready }));
     } catch (error) {
       devLog('AiService error', error);

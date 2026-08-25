@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "tsc": "tsc --noEmit --pretty false | awk '/^[^[:space:]]/{skip=/node_modules/} !skip{print; c=1} END{exit c?1:0}'"
   },
   "dependencies": {
     "@callstack/liquid-glass": "^0.8.0",
@@ -22,7 +23,7 @@
     "react-native-enriched-markdown": "^0.4.1",
     "react-native-nitro-modules": "^0.36.5",
     "react-native-nitro-sound": "^0.2.15",
-    "react-native-nobodywho": "2.5.0",
+    "react-native-nobodywho": "3.0.0",
     "react-native-permissions": "^5.6.1",
     "react-native-safe-area-context": "^5.7.0",
     "react-native-screens": "^4.24.0"

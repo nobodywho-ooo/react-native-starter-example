@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { isLiquidGlassSupported } from '@callstack/liquid-glass';
 import { useStyled } from 'hooks';
@@ -20,24 +20,6 @@ export const VisionStackNavigator = () => {
     initVisionChat();
   }, [initVisionChat]);
 
-  const ErrorScreenWithRetry = useMemo(
-    () => () => <ErrorScreen onRetry={initVisionChat} />,
-    [initVisionChat],
-  );
-
-  let Screen = LoadingScreen;
-
-  switch (visionHearingChatState) {
-    case AiModelState.Ready:
-      Screen = VisionScreen;
-      break;
-    case AiModelState.Error:
-      Screen = ErrorScreenWithRetry;
-      break;
-    default:
-      Screen = LoadingScreen;
-  }
-
   return (
     <Stack.Navigator
       screenOptions={{
@@ -51,12 +33,22 @@ export const VisionStackNavigator = () => {
     >
       <Stack.Screen
         name="VisionScreen"
-        component={Screen}
         options={{
           title: 'Vision',
           headerLargeTitleEnabled: true,
         }}
-      />
+      >
+        {() => {
+          switch (visionHearingChatState) {
+            case AiModelState.Ready:
+              return <VisionScreen />;
+            case AiModelState.Error:
+              return <ErrorScreen onRetry={initVisionChat} />;
+            default:
+              return <LoadingScreen />;
+          }
+        }}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

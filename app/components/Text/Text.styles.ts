@@ -1,5 +1,14 @@
-import { TextStyle } from 'react-native';
+import { StyleSheet, TextStyle } from 'react-native';
 import { TextVariant } from 'types';
+
+export const styles = StyleSheet.create({
+  bold: {
+    fontWeight: '600',
+  },
+  italic: {
+    fontStyle: 'italic',
+  },
+});
 
 export const variantStyles: Record<TextVariant, TextStyle> = {
   h1: {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useStyled } from 'hooks';
 import { AiModelState, useAiService } from 'services';
@@ -19,24 +19,6 @@ export const ChatStackNavigator = () => {
     initChat();
   }, [initChat]);
 
-  const ErrorScreenWithRetry = useMemo(
-    () => () => <ErrorScreen onRetry={initChat} />,
-    [initChat],
-  );
-
-  let Screen = LoadingScreen;
-
-  switch (chatState) {
-    case AiModelState.Ready:
-      Screen = ChatScreen;
-      break;
-    case AiModelState.Error:
-      Screen = ErrorScreenWithRetry;
-      break;
-    default:
-      Screen = LoadingScreen;
-  }
-
   return (
     <Stack.Navigator
       screenOptions={{
@@ -45,11 +27,18 @@ export const ChatStackNavigator = () => {
         headerTitleStyle: { color: colors.onSurface },
       }}
     >
-      <Stack.Screen
-        name="ChatScreen"
-        component={Screen}
-        options={{ title: 'Chat' }}
-      />
+      <Stack.Screen name="ChatScreen" options={{ title: 'Chat' }}>
+        {() => {
+          switch (chatState) {
+            case AiModelState.Ready:
+              return <ChatScreen />;
+            case AiModelState.Error:
+              return <ErrorScreen onRetry={initChat} />;
+            default:
+              return <LoadingScreen />;
+          }
+        }}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

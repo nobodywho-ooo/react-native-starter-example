@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Sound from 'react-native-nitro-sound';
 import { fromByteArray } from 'base64-js';
 import { CachesDirectoryPath, writeFile } from '@dr.pogodin/react-native-fs';
-import { Tts } from 'react-native-nobodywho';
+import { TextToSpeech } from 'react-native-nobodywho';
 
 import { devLog } from 'helpers';
 import { useAiService } from 'services';
@@ -75,7 +75,7 @@ const splitIntoChunks = (text: string): string[] => {
 };
 
 const synthesizeChunk = async (
-  synth: Tts,
+  synth: TextToSpeech,
   text: string,
 ): Promise<Uint8Array[]> => {
   try {
