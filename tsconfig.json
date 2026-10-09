@@ -1,7 +1,6 @@
 {
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
-    "types": ["jest"],
     "customConditions": ["react-native", "react-native-strict-api"],
     "paths": {
       "components": ["./app/components"],
