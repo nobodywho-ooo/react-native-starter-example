@@ -20,22 +20,35 @@ class SceneDelegate: RCTDefaultReactNativeFactoryDelegate, UIWindowSceneDelegate
     reactNativeFactory = RCTReactNativeFactory(delegate: self)
     window = UIWindow(windowScene: windowScene)
 
+    #if DEBUG
+    let devMenuConfiguration = RCTDevMenuConfiguration(
+      devMenuEnabled: true,
+      shakeGestureEnabled: true,
+      keyboardShortcutsEnabled: true
+    )
+    reactNativeFactory?.devMenuConfiguration = devMenuConfiguration
+    #endif
+
     reactNativeFactory?.startReactNative(
       withModuleName: "ReactNativeNobodyWho",
       in: window,
-      launchOptions: nil
+      connectionOptions: connectionOptions
     )
   }
 
-  override func sourceURL(for bridge: RCTBridge) -> URL? {
-    self.bundleURL()
+  func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    RCTLinkingManager.scene(scene, openURLContexts: URLContexts)
+  }
+
+  func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+    RCTLinkingManager.scene(scene, continue: userActivity)
   }
 
   override func bundleURL() -> URL? {
-#if DEBUG
+    #if DEBUG
     RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
-#else
+    #else
     Bundle.main.url(forResource: "main", withExtension: "jsbundle")
-#endif
+    #endif
   }
 }
