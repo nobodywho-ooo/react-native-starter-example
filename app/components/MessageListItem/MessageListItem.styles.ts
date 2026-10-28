@@ -18,6 +18,11 @@ export default StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
   },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   activityIndicator: {
     alignSelf: 'flex-start',
   },

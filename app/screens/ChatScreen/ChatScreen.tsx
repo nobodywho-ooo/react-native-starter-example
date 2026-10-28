@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { FlatList, View, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Message } from 'react-native-nobodywho';
@@ -12,6 +18,7 @@ import {
 } from 'hooks';
 import { useAiService } from 'services';
 import { isAndroid, isIOS } from 'helpers';
+import { MessageStats } from 'types';
 
 import styles from './ChatScreen.styles';
 
@@ -19,6 +26,9 @@ const INPUT_BAR_BOTTOM_GAP = 14;
 
 export const ChatScreen: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [messageStats, setMessageStats] = useState<
+    Record<number, MessageStats>
+  >({});
   const [inputText, setInputText] = useState('');
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -82,16 +92,25 @@ export const ChatScreen: React.FC = () => {
       content: '',
     };
 
+    const assistantIndex = messages.length + 1;
     setMessages(prev => [...prev, userMessage, initialAssistantMessage]);
     setInputText('');
     Keyboard.dismiss();
     setIsStreaming(true);
+
+    const startTime = Date.now();
+    let firstTokenTime = 0;
+    let tokenCount = 0;
 
     try {
       let accumulated = '';
       const streamResult = chat.ask(userInput);
 
       for await (const token of streamResult) {
+        if (tokenCount === 0) {
+          firstTokenTime = Date.now();
+        }
+        tokenCount += 1;
         accumulated += token;
         setMessages(prev => {
           const next = [...prev];
@@ -105,6 +124,16 @@ export const ChatScreen: React.FC = () => {
     } catch (error) {
       console.error('Chat generation failed:', error);
     } finally {
+      if (tokenCount > 0) {
+        const decodeSeconds = (Date.now() - firstTokenTime) / 1000;
+        setMessageStats(prev => ({
+          ...prev,
+          [assistantIndex]: {
+            timeToFirstTokenMs: firstTokenTime - startTime,
+            tokensPerSecond: decodeSeconds > 0 ? tokenCount / decodeSeconds : 0,
+          },
+        }));
+      }
       setIsStreaming(false);
     }
   };
@@ -130,13 +159,17 @@ export const ChatScreen: React.FC = () => {
     [footerHeight],
   );
 
-  const keyExtractor = useCallback((_: Message, index: number) => `${index}`, []);
+  const keyExtractor = useCallback(
+    (_: Message, index: number) => `${index}`,
+    [],
+  );
 
   const renderItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => (
       <MessageListItem
         message={item}
         index={index}
+        stats={messageStats[index]}
         isStreaming={isStreaming}
         isAudioLoading={loadingIndex === index}
         isPlaying={playingIndex === index}
@@ -144,7 +177,7 @@ export const ChatScreen: React.FC = () => {
         onStop={stop}
       />
     ),
-    [isStreaming, loadingIndex, playingIndex, play, stop],
+    [isStreaming, messageStats, loadingIndex, playingIndex, play, stop],
   );
 
   return (
