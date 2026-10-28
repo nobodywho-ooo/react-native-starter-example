@@ -95,20 +95,6 @@ npm run ios
 
 **Note:** For iOS, if you have issues with metro, run `npm start` and then run the project on Xcode.
 
-#### Miscellaneous
-
-iOS cleanup
-
-```sh
-make ios-clean
-```
-
-Watchman cleanup
-
-```sh
-make clean
-```
-
 ---
 
 ## Feedback & Contributions
