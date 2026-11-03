@@ -86,7 +86,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - Nobodywho (5.1.0):
+  - Nobodywho (6.0.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -108,7 +108,7 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
-    - uniffi-bindgen-react-native (= 0.30.0-1)
+    - uniffi-bindgen-react-native (= 0.31.0-6)
     - Yoga
   - RCT-Folly (2024.11.18.00):
     - RCT-Folly/Default (= 2024.11.18.00)
@@ -2075,7 +2075,7 @@ PODS:
     - Yoga
   - SocketRocket (0.7.1):
     - ReactNativeDependencies
-  - uniffi-bindgen-react-native (0.30.0-1):
+  - uniffi-bindgen-react-native (0.31.0-6):
     - React-Core
   - Yoga (0.0.0):
     - React-Core-prebuilt
@@ -2392,7 +2392,7 @@ SPEC CHECKSUMS:
   LiquidGlass: 90d4f92e7a6c8577f38515c30a3fe36d3c157760
   NitroModules: c32f969b7c536e0b6b401a9dfdb35bb4eba071ef
   NitroSound: 2e661bf89e49d0d7e94bef4d46b50d07e3db23d2
-  Nobodywho: 89b88639f46c29ec1ce8726c7a1eff31a593c844
+  Nobodywho: 095e43c75719e72bd818ab13a3ff629f7e11ffe7
   RCT-Folly: 82921e585c0400eda46fac1068297aa9dfb035e4
   RCTDeprecation: c62b9b3fbf0d26b76755f3ebd1c913a4fb469dde
   RCTRequired: d0563e2484633b657976195f0543e180133afd3a
@@ -2478,7 +2478,7 @@ SPEC CHECKSUMS:
   RNPermissions: f15cd26b24b9fd287840eab811d03756606f671f
   RNScreens: 6d0d3b7819284dbf9f222899eb819f069fce4b8b
   SocketRocket: 37aec555668fb852ec12e3c0de59a86ca58f0871
-  uniffi-bindgen-react-native: 80b84792114d89b005d913b7b8d875b36111178f
+  uniffi-bindgen-react-native: 749b7dc6d185aed4eed1560626b043c12ac1282e
   Yoga: d1c536142c5ff8ec8cd856ab2a7c227a1d875c8e
 
 PODFILE CHECKSUM: 6e52c203474e1d45f37c807f07ef46418b5b9cbe

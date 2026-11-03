@@ -54,6 +54,15 @@ export const MoreScreen: React.FC = () => {
             // @ts-ignore
             onPress={() => navigation.navigate('RagScreen')}
           />
+          <ListItem
+            title="Decision"
+            subtitle="Score predefined answers with a decision model"
+            iosIconName="checklist"
+            androidIconName="checklist"
+            iconBackgroundColor="#34C759"
+            // @ts-ignore
+            onPress={() => navigation.navigate('DecisionScreen')}
+          />
         </>
       )}
     </ScrollView>

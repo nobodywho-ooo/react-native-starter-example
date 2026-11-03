@@ -1,6 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { isLiquidGlassSupported } from '@callstack/liquid-glass';
-import { EmbeddingsScreen, MoreScreen, RagScreen } from 'screens';
+import {
+  DecisionScreen,
+  EmbeddingsScreen,
+  MoreScreen,
+  RagScreen,
+} from 'screens';
 import { useStyled } from 'hooks';
 
 const Stack = createNativeStackNavigator();
@@ -37,6 +42,11 @@ export const MoreStackNavigator = () => {
         name="RagScreen"
         component={RagScreen}
         options={{ title: 'RAG' }}
+      />
+      <Stack.Screen
+        name="DecisionScreen"
+        component={DecisionScreen}
+        options={{ title: 'Decision' }}
       />
     </Stack.Navigator>
   );
