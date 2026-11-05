@@ -152,7 +152,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         chatRef.current = chat;
         setState(s => ({ ...s, chatState: AiModelState.Ready }));
       } catch (error) {
-        devLog('AiService error', error);
+        devLog('AiService chat error', error);
         setState(s => ({ ...s, chatState: AiModelState.Error }));
       } finally {
         inFlight.current.chat = false;
@@ -195,7 +195,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
           chatWithToolCallingState: AiModelState.Ready,
         }));
       } catch (error) {
-        devLog('AiService error', error);
+        devLog('AiService chatWithToolCalling error', error);
         setState(s => ({
           ...s,
           chatWithToolCallingState: AiModelState.Error,
@@ -232,7 +232,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         visionHearingChatRef.current = chat;
         setState(s => ({ ...s, visionHearingChatState: AiModelState.Ready }));
       } catch (error) {
-        devLog('AiService error', error);
+        devLog('AiService visionHearingChat error', error);
         setState(s => ({ ...s, visionHearingChatState: AiModelState.Error }));
       } finally {
         inFlight.current.visionHearingChat = false;
@@ -257,7 +257,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         encoderRef.current = encoder;
         setState(s => ({ ...s, encoderState: AiModelState.Ready }));
       } catch (error) {
-        devLog('AiService error', error);
+        devLog('AiService encoder error', error);
         setState(s => ({ ...s, encoderState: AiModelState.Error }));
       } finally {
         inFlight.current.encoder = false;
@@ -282,7 +282,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         crossEncoderRef.current = crossEncoder;
         setState(s => ({ ...s, crossEncoderState: AiModelState.Ready }));
       } catch (error) {
-        devLog('AiService error', error);
+        devLog('AiService crossEncoder error', error);
         setState(s => ({ ...s, crossEncoderState: AiModelState.Error }));
       } finally {
         inFlight.current.crossEncoder = false;
@@ -306,7 +306,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
         decisionRef.current = decision;
         setState(s => ({ ...s, decisionState: AiModelState.Ready }));
       } catch (error) {
-        devLog('AiService error', error);
+        devLog('AiService decision error', error);
         setState(s => ({ ...s, decisionState: AiModelState.Error }));
       } finally {
         inFlight.current.decision = false;
@@ -335,7 +335,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       ttsRef.current = tts;
       setState(s => ({ ...s, ttsState: AiModelState.Ready }));
     } catch (error) {
-      devLog('AiService error', error);
+      devLog('AiService tts error', error);
       setState(s => ({ ...s, ttsState: AiModelState.Error }));
     } finally {
       inFlight.current.tts = false;
@@ -353,7 +353,7 @@ export const AiServiceProvider: React.FC<{ children: React.ReactNode }> = ({
       sttRef.current = stt;
       setState(s => ({ ...s, sttState: AiModelState.Ready }));
     } catch (error) {
-      devLog('AiService error', error);
+      devLog('AiService stt error', error);
       setState(s => ({ ...s, sttState: AiModelState.Error }));
     }
   }, []);
